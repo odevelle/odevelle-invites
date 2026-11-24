@@ -17,11 +17,11 @@ test.describe("Landing page", () => {
       .evaluateAll((els) => els.map((el) => el.id || el.getAttribute("aria-labelledby")));
     expect(ids).toEqual([
       "hero-title",
-      "collection",
-      "how",
+      "designs",
+      "how-it-works",
       "pricing",
-      "why",
-      "stories",
+      "the-studio",
+      "kind-words",
       "final-title",
       "faq",
       "begin",

@@ -1,4 +1,5 @@
 import { designs } from "@/content/marketing/designs";
+import { LoopingRow } from "./LoopingRow";
 import { Eye } from "./icons";
 import { InviteMockup } from "./invite-mockup/InviteMockup";
 import { PreviewTrigger } from "./preview/DesignStudio";
@@ -7,14 +8,14 @@ import { Eyebrow, button, displayHeading } from "./ui";
 export function Collection() {
   return (
     <section
-      id="collection"
-      aria-labelledby="collection-title"
+      id="designs"
+      aria-labelledby="designs-title"
       className="bg-sand pt-[clamp(64px,8vw,104px)] pb-[clamp(44px,5vw,72px)]"
     >
       <div className="reveal shell flex flex-col items-center text-center">
         <Eyebrow number="N°1">The Collection</Eyebrow>
         <h2
-          id="collection-title"
+          id="designs-title"
           className={`${displayHeading} mt-4 max-w-[15em] text-[clamp(36px,7.6vw,62px)] text-balance`}
         >
           Four invitations, each with <em>a character of its own.</em>
@@ -24,8 +25,12 @@ export function Collection() {
         </p>
       </div>
 
-      {/* Horizontal gallery on small screens, a centred row of four on wide screens */}
-      <div
+      {/* Horizontal gallery on small screens, a centred row of four on wide screens.
+          On narrow screens it loops forward a design every 3.5s; wide screens
+          show all four at once, so there it stays still. */}
+      <LoopingRow
+        compactInterval={3500}
+        itemLabel="design"
         role="list"
         className="no-scrollbar mt-[clamp(32px,5vw,56px)] flex snap-x snap-mandatory gap-[clamp(20px,3vw,36px)] overflow-x-auto px-[clamp(20px,5vw,48px)] pt-3 pb-6 scroll-px-[clamp(20px,5vw,48px)] xl:justify-center-safe"
       >
@@ -69,7 +74,7 @@ export function Collection() {
             </article>
           );
         })}
-      </div>
+      </LoopingRow>
 
       <div className="shell mt-[clamp(8px,4vw,72px)] flex flex-col items-center gap-3.5 text-center">
         <p

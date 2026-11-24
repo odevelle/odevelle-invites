@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from "next";
+import { SameSectionScroll } from "@/components/marketing/SameSectionScroll";
 import {
   Bodoni_Moda,
   Cormorant_Garamond,
@@ -64,7 +65,10 @@ export default function MarketingRootLayout({ children }: LayoutProps<"/">) {
       data-scroll-behavior="smooth"
       className={`${cormorant.variable} ${inter.variable} ${bodoni.variable} ${manrope.variable} ${greatVibes.variable}`}
     >
-      <body>{children}</body>
+      <body>
+        {children}
+        <SameSectionScroll />
+      </body>
     </html>
   );
 }

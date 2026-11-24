@@ -37,7 +37,7 @@ export function Hero() {
               Begin your invitation
               <ArrowRight size={18} />
             </a>
-            <a href="#collection" className="link-draw py-2.5 text-base text-ink">
+            <a href="#designs" className="link-draw py-2.5 text-base text-ink">
               View the collection
             </a>
           </div>

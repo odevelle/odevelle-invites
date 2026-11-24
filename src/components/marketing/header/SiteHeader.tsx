@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { clientLogin, ctaLinks, primaryNav } from "@/content/marketing/navigation";
-import { Sparkle } from "../icons";
+import { ArrowRight, Sparkle } from "../icons";
 import { transitionTypesFor } from "../PageTransition";
 import { button } from "../ui";
 import { MobileMenu } from "./MobileMenu";
@@ -63,11 +63,12 @@ export function SiteHeader({ currentPath = "/" }: { currentPath?: string }) {
               </li>
             </ul>
             <Link
-              href={ctaLinks.begin}
-              transitionTypes={transitionTypesFor(ctaLinks.begin, currentPath)}
-              className={button("primary", "hidden min-h-11 px-5.5 text-[15px] font-medium whitespace-nowrap xl:inline-flex")}
+              href={ctaLinks.designs}
+              transitionTypes={transitionTypesFor(ctaLinks.designs, currentPath)}
+              className={button("primary", "hidden min-h-11 gap-2.5 px-5.5 text-[15px] font-medium whitespace-nowrap xl:inline-flex")}
             >
-              Begin your invitation
+              Explore Designs
+              <ArrowRight size={16} />
             </Link>
             <MobileMenu currentPath={currentPath} />
           </nav>

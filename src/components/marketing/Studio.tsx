@@ -15,7 +15,7 @@ const qualities = [
 
 export function Studio() {
   return (
-    <section id="why" aria-labelledby="why-title" className="py-[clamp(64px,8vw,112px)]">
+    <section id="the-studio" aria-labelledby="the-studio-title" className="py-[clamp(64px,8vw,112px)]">
       <div className="shell flex flex-wrap items-center gap-[clamp(40px,6vw,88px)]">
         <figure className="reveal relative m-0 min-w-0 max-w-125 flex-[1_1_360px]">
           {/* Placeholder from the approved design, to be replaced with studio photography. */}
@@ -39,7 +39,7 @@ export function Studio() {
 
         <div className="min-w-0 flex-[1_1_440px]">
           <Eyebrow number="N°4">The Studio</Eyebrow>
-          <h2 id="why-title" className={`${displayHeading} mt-4 text-[clamp(36px,7.4vw,58px)] text-balance`}>
+          <h2 id="the-studio-title" className={`${displayHeading} mt-4 text-[clamp(36px,7.4vw,58px)] text-balance`}>
             Quietly luxurious, <em>made just for you.</em>
           </h2>
           <dl className="mt-8.5 mb-0 grid grid-cols-[repeat(auto-fit,minmax(min(220px,100%),1fr))] gap-x-9 gap-y-6.5">

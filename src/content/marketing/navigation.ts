@@ -10,15 +10,15 @@ export const ctaLinks = {
   begin: "/#begin",
   whatsapp: "/#whatsapp",
   pricing: "/#pricing",
-  collection: "/#collection",
+  designs: "/#designs",
 } as const;
 
 export const featuresPage: NavLink = { label: "Features", href: "/features" };
 
 /** Header navigation (desktop). */
 export const primaryNav: NavLink[] = [
-  { label: "Designs", href: "/#collection" },
-  { label: "How It Works", href: "/#how" },
+  { label: "Designs", href: "/#designs" },
+  { label: "How It Works", href: "/#how-it-works" },
   featuresPage,
   { label: "Pricing", href: "/#pricing" },
   { label: "Questions", href: "/#faq" },
@@ -27,25 +27,25 @@ export const primaryNav: NavLink[] = [
 
 /** Full-screen mobile menu. */
 export const mobileNav: NavLink[] = [
-  { label: "Designs", href: "/#collection" },
-  { label: "How It Works", href: "/#how" },
+  { label: "Designs", href: "/#designs" },
+  { label: "How It Works", href: "/#how-it-works" },
   featuresPage,
   { label: "Pricing", href: "/#pricing" },
   { label: "Questions", href: "/#faq" },
   { label: "Contact", href: "/#begin" },
 ];
 
-export const clientLogin: NavLink = { label: "Client login", href: "/#signin" };
+export const clientLogin: NavLink = { label: "Client login", href: "/#client-login" };
 
 export const footerNav: { title: string; links: NavLink[] }[] = [
   {
     title: "Studio",
     links: [
-      { label: "Designs", href: "/#collection" },
+      { label: "Designs", href: "/#designs" },
       featuresPage,
       { label: "Pricing", href: "/#pricing" },
-      { label: "How It Works", href: "/#how" },
-      { label: "Kind Words", href: "/#stories" },
+      { label: "How It Works", href: "/#how-it-works" },
+      { label: "Kind Words", href: "/#kind-words" },
     ],
   },
   {

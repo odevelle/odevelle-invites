@@ -28,12 +28,12 @@ const dots = (direction: "x" | "y") =>
 
 export function Process() {
   return (
-    <section id="how" aria-labelledby="how-title" className="relative bg-cream pt-[clamp(48px,5vw,72px)] pb-[clamp(72px,9vw,128px)]">
+    <section id="how-it-works" aria-labelledby="how-it-works-title" className="relative bg-cream pt-[clamp(48px,5vw,72px)] pb-[clamp(72px,9vw,128px)]">
       <div className="shell">
         <div className="reveal flex flex-col items-center text-center">
           <Eyebrow number="N°2">The Process</Eyebrow>
           <h2
-            id="how-title"
+            id="how-it-works-title"
             className="mt-4 mb-0 max-w-[15em] font-serif text-[clamp(38px,7.6vw,60px)] font-medium leading-[1.02] tracking-[-0.01em] text-balance text-gold [&_em]:text-olive"
           >
             You share the story. <em>We do everything else.</em>

@@ -8,6 +8,7 @@ import type { SwiperClass } from "swiper/react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { testimonials } from "@/content/marketing/testimonials";
 import { ChevronLeft, ChevronRight } from "../icons";
+import { COMPACT_SCREEN, useMediaQuery } from "../useMediaQuery";
 import { useMounted } from "../useMounted";
 import { useReducedMotion } from "../useReducedMotion";
 import { TestimonialCard } from "./TestimonialCard";
@@ -27,6 +28,8 @@ export function TestimonialsCarousel() {
   const [swiper, setSwiper] = useState<SwiperClass | null>(null);
   const mounted = useMounted();
   const animate = !useReducedMotion();
+  /** One or two cards on a narrow screen, so the reviews come round sooner. */
+  const delay = useMediaQuery(COMPACT_SCREEN) ? 5_000 : 12_000;
 
   /** Once the visitor steers, autoplay gets out of the way for good. */
   const step = (to: "next" | "prev") => {
@@ -66,7 +69,7 @@ export function TestimonialsCarousel() {
           600: { slidesPerView: 2, slidesPerGroup: 2, autoHeight: false },
           960: { slidesPerView: 3, slidesPerGroup: 3, autoHeight: false },
         }}
-        autoplay={animate ? { delay: 12_000, pauseOnMouseEnter: true } : false}
+        autoplay={animate ? { delay, pauseOnMouseEnter: true } : false}
         loopPreventsSliding={false}
         keyboard={{ enabled: true }}
         pagination={{ clickable: true }}

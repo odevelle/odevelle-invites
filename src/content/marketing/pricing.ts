@@ -62,7 +62,7 @@ export const plans: Plan[] = [
       "RSVP form and private dashboard",
       "[N] round of refinements",
     ],
-    cta: { label: "Choose Classic", href: "#collection" },
+    cta: { label: "Choose Classic", href: "#designs" },
   },
   {
     id: "signature",
@@ -74,7 +74,7 @@ export const plans: Plan[] = [
       "Your own palette and typography",
       "[N] rounds of refinements",
     ],
-    cta: { label: "Choose Signature", href: "#collection" },
+    cta: { label: "Choose Signature", href: "#designs" },
     featured: true,
   },
   {

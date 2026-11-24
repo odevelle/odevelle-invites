@@ -8,11 +8,11 @@ test.describe("Kind Words carousel", () => {
   test.beforeEach(async ({ page }) => {
     await page.goto("/");
     // Wait for Swiper to take over from the prerendered row.
-    await expect(page.locator("#stories .swiper-initialized")).toBeVisible();
+    await expect(page.locator("#kind-words .swiper-initialized")).toBeVisible();
   });
 
   test("carries all six reviews, each with a five star rating", async ({ page }) => {
-    const section = page.locator("#stories");
+    const section = page.locator("#kind-words");
     for (const name of names) {
       await expect(section.getByText(name, { exact: true }).first()).toHaveCount(1);
     }
@@ -24,7 +24,7 @@ test.describe("Kind Words carousel", () => {
   });
 
   test("names the place and not the city, and Goa rather than India", async ({ page }) => {
-    const card = (name: string) => page.locator("#stories figure").filter({ hasText: name }).first();
+    const card = (name: string) => page.locator("#kind-words figure").filter({ hasText: name }).first();
 
     const spain = card("Lucía Fernández & Alejandro Martín");
     await expect(spain).toContainText("Spain");
@@ -37,7 +37,7 @@ test.describe("Kind Words carousel", () => {
 
   test("steps forward three at a time and loops back round", async ({ page, isMobile }) => {
     test.skip(isMobile, "Three at a time is the desktop layout.");
-    const section = page.locator("#stories");
+    const section = page.locator("#kind-words");
     const visible = section.locator(".swiper-slide-visible");
     await expect(visible).toHaveCount(3);
     await expect(visible.first()).toContainText(names[0]);
@@ -56,6 +56,17 @@ test.describe("Kind Words carousel", () => {
 
   test("shows one card at a time on a phone", async ({ page, isMobile }) => {
     test.skip(!isMobile, "Single card is the phone layout.");
-    await expect(page.locator("#stories .swiper-slide-visible")).toHaveCount(1);
+    await expect(page.locator("#kind-words .swiper-slide-visible")).toHaveCount(1);
+  });
+
+  test("comes round sooner on a narrow screen", async ({ page, isMobile }) => {
+    const delay = await page
+      .locator("#kind-words .swiper")
+      .evaluate(
+        (el) =>
+          (el as HTMLElement & { swiper: { params: { autoplay: { delay: number } } } }).swiper.params
+            .autoplay.delay,
+      );
+    expect(delay).toBe(isMobile ? 5_000 : 12_000);
   });
 });

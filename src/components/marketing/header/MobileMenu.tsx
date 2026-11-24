@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { createPortal } from "react-dom";
 import { clientLogin, ctaLinks, mobileNav } from "@/content/marketing/navigation";
-import { Close, Menu } from "../icons";
+import { ArrowRight, Close, Menu } from "../icons";
 import { transitionTypesFor } from "../PageTransition";
 import { button } from "../ui";
 import { useDialogBehaviour } from "../useDialogBehaviour";
@@ -74,11 +74,12 @@ export function MobileMenu({ currentPath = "/" }: { currentPath?: string }) {
           </nav>
           <div className="mt-auto flex flex-col gap-3 pt-10">
             <Link
-              href={ctaLinks.begin}
-              transitionTypes={transitionTypesFor(ctaLinks.begin, currentPath)}
+              href={ctaLinks.designs}
+              transitionTypes={transitionTypesFor(ctaLinks.designs, currentPath)}
               onClick={close}
-              className={button("primary", "flex min-h-14 text-[17px] font-medium")}>
-              Begin your invitation
+              className={button("primary", "flex min-h-14 gap-3 text-[17px] font-medium")}>
+              Explore Designs
+              <ArrowRight size={18} />
             </Link>
             <Link
               href={ctaLinks.whatsapp}
