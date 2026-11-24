@@ -9,6 +9,7 @@ function Rating() {
         <Star key={i} />
       ))}
     </p>
+    
   );
 }
 
