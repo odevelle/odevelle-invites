@@ -1,0 +1,353 @@
+@import "tailwindcss";
+
+/* The approved design reference is a 4MB bundle of inline styles and base64 assets.
+   Keep Tailwind's class scanner away from it. */
+@source not "../../../ODEVELLE_Final_ Landing_Page.html";
+
+/* ---------------------------------------------------------------------------
+   ODEVELLE marketing tokens
+   Values are taken directly from the approved landing page reference.
+   --------------------------------------------------------------------------- */
+@theme {
+  --color-*: initial;
+  --color-white: #ffffff;
+  --color-transparent: transparent;
+  --color-current: currentColor;
+
+  --color-ink: #1f2420; /* primary text, footer, dark surfaces */
+  --color-cream: #f7f5ef; /* page background */
+  --color-sand: #efede5; /* alternate section background */
+  --color-linen: #e9e6dd; /* hairline borders, light text on dark */
+  --color-olive: #4a5e3f; /* brand green */
+  --color-olive-deep: #3b4b32; /* brand green, hover */
+  --color-gold: #9a7b1e; /* headline gold */
+  --color-gold-deep: #7a5c12; /* small serif headings */
+  --color-butter: #f3e3a1; /* highlight yellow */
+  --color-butter-deep: #e2cf83; /* highlight yellow, borders + hover */
+  --color-brass: #c9b26a; /* ornament dots */
+  --color-muted: #4f554e; /* secondary text */
+  --color-stone: #b3afa3; /* dotted connectors, disabled marks */
+  --color-sage-wash: #e3eadb; /* soft green chips */
+  --color-placeholder: #8a8e85;
+
+  --font-serif: var(--font-cormorant), Georgia, serif;
+  --font-sans: var(--font-inter), system-ui, "Helvetica Neue", Arial, sans-serif;
+  --font-price:
+    "Fraunces Variable", "Fraunces Fallback", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  /* Invitation mockup faces (only used inside the phone / paper previews) */
+  --font-bodoni: var(--font-bodoni-moda), Georgia, serif;
+  --font-manrope: var(--font-manrope-sans), "Helvetica Neue", Arial, sans-serif;
+  --font-vibes: var(--font-great-vibes), cursive;
+
+  /* Type sizes set only font-size, so text inherits the page's 1.6 line-height
+     (or a parent's), exactly as in the reference. */
+  --text-*: initial;
+  --text-xs: 12px;
+  --text-sm: 14px;
+  --text-base: 16px;
+  --text-lg: 18px;
+  --text-xl: 20px;
+  --text-2xl: 24px;
+
+  /* Breakpoints used by the reference design */
+  --breakpoint-*: initial;
+  --breakpoint-sm: 600px;
+  --breakpoint-md: 720px;
+  --breakpoint-lg: 960px;
+  --breakpoint-xl: 1180px;
+
+  --ease-soft: cubic-bezier(0.2, 0.7, 0.2, 1);
+
+  --animate-marquee: od-marquee 42s linear infinite;
+  --animate-float: od-float 7s ease-in-out infinite;
+  --animate-pulse-ring: od-pulse 2.6s ease-out infinite;
+  --animate-peek: od-peek 5s ease-in-out infinite;
+  --animate-spin-slow: od-spin 36s linear infinite;
+  --animate-rise: od-up 1s var(--ease-soft) both;
+
+  @keyframes od-marquee {
+    to {
+      transform: translateX(-50%);
+    }
+  }
+  @keyframes od-float {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-10px);
+    }
+  }
+  @keyframes od-up {
+    from {
+      opacity: 0;
+      transform: translateY(16px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+  @keyframes od-pulse {
+    0% {
+      box-shadow: 0 0 0 0 rgba(74, 94, 63, 0.45);
+    }
+    70% {
+      box-shadow: 0 0 0 12px rgba(74, 94, 63, 0);
+    }
+    100% {
+      box-shadow: 0 0 0 0 rgba(74, 94, 63, 0);
+    }
+  }
+  @keyframes od-peek {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-9%);
+    }
+  }
+  @keyframes od-spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+}
+
+/* Metric-matched stand-in for Fraunces while it loads (prevents layout shift). */
+@font-face {
+  font-family: "Fraunces Fallback";
+  src: local("Times New Roman");
+  ascent-override: 84.71%;
+  descent-override: 22.09%;
+  line-gap-override: 0%;
+  size-adjust: 115.45%;
+}
+
+/* Centered content column used by every section */
+@utility shell {
+  max-width: 1240px;
+  margin-inline: auto;
+  padding-inline: clamp(20px, 5vw, 48px);
+}
+
+/* Underline that draws in on hover */
+@utility link-draw {
+  text-decoration: none;
+  background-image: linear-gradient(currentColor, currentColor);
+  background-size: 0 1px;
+  background-repeat: no-repeat;
+  background-position: 0 100%;
+  transition: background-size 0.35s ease;
+  &:hover,
+  &[aria-current="page"] {
+    background-size: 100% 1px;
+  }
+}
+
+/* Horizontal galleries without visible scrollbars */
+@utility no-scrollbar {
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    background: var(--color-cream);
+  }
+
+  body {
+    margin: 0;
+    background: var(--color-cream);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-size: 16px;
+    line-height: 1.6;
+    overflow-x: clip;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  a {
+    color: var(--color-olive);
+  }
+
+  em {
+    font-style: italic;
+  }
+
+  ::placeholder {
+    color: var(--color-placeholder);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-olive);
+    outline-offset: 3px;
+    border-radius: 8px;
+  }
+
+  .on-dark :focus-visible {
+    outline-color: var(--color-linen);
+  }
+}
+
+@layer components {
+  /* Entrance animation used in the hero (staggered with .rise-1 … .rise-4) */
+  .rise {
+    animation: var(--animate-rise);
+  }
+  .rise-1 {
+    animation-delay: 0.12s;
+  }
+  .rise-2 {
+    animation-delay: 0.26s;
+  }
+  .rise-3 {
+    animation-delay: 0.4s;
+  }
+  .rise-4 {
+    animation-delay: 0.6s;
+  }
+
+  /* Scroll-driven reveal, only where the browser supports view timelines */
+  @supports (animation-timeline: view()) {
+    .reveal {
+      animation: od-up linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 45%;
+    }
+  }
+
+  /* Shared button motion */
+  .btn {
+    transition:
+      background-color 0.25s ease,
+      color 0.25s ease,
+      transform 0.25s ease,
+      box-shadow 0.25s ease,
+      border-color 0.25s ease;
+  }
+  .btn:hover {
+    transform: translateY(-1px);
+  }
+
+  .field:focus {
+    border-color: var(--color-olive);
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(74, 94, 63, 0.14);
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Page transitions (see components/marketing/PageTransition.tsx)
+   page-down: landing → sub-page. Old page eases up and out, new page rises in,
+              reading as a continuation of the scroll.
+   page-up:   sub-page → landing. The reverse.
+   The header keeps still so the user has a fixed point of reference.
+   --------------------------------------------------------------------------- */
+::view-transition-old(.page-down),
+::view-transition-old(.page-up) {
+  animation:
+    260ms ease-in both vt-fade reverse,
+    420ms var(--ease-soft) both vt-slide reverse;
+}
+::view-transition-new(.page-down),
+::view-transition-new(.page-up) {
+  animation:
+    360ms ease-out 140ms both vt-fade,
+    560ms var(--ease-soft) both vt-slide;
+}
+::view-transition-old(.page-down) {
+  --vt-offset: -40px;
+}
+::view-transition-new(.page-down) {
+  --vt-offset: 56px;
+}
+::view-transition-old(.page-up) {
+  --vt-offset: 40px;
+}
+::view-transition-new(.page-up) {
+  --vt-offset: -56px;
+}
+
+@keyframes vt-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes vt-slide {
+  from {
+    translate: 0 var(--vt-offset);
+  }
+  to {
+    translate: 0 0;
+  }
+}
+
+::view-transition-group(site-header) {
+  animation: none;
+  z-index: 100;
+}
+::view-transition-old(site-header) {
+  display: none;
+}
+::view-transition-new(site-header) {
+  animation: none;
+}
+
+/* Let clicks reach the live page while a transition plays. */
+::view-transition {
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(*),
+  ::view-transition-new(*),
+  ::view-transition-group(*) {
+    animation-duration: 0s !important;
+    animation-delay: 0s !important;
+  }
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Swiper (see components/marketing/testimonials/TestimonialsCarousel.tsx)
+   Swiper's own stylesheet is imported from the component, so it lands after
+   this file. These rules use two classes to stay the more specific ones.
+   --------------------------------------------------------------------------- */
+.od-swiper {
+  --swiper-pagination-color: var(--color-olive);
+  --swiper-pagination-bullet-inactive-color: var(--color-stone);
+  --swiper-pagination-bullet-inactive-opacity: 0.6;
+  --swiper-pagination-bullet-size: 7px;
+  --swiper-pagination-bullet-horizontal-gap: 5px;
+  --swiper-pagination-bottom: 0;
+}
+/* Cards in one row share the height of the tallest. */
+.od-swiper .swiper-slide {
+  height: auto;
+}
+/* Room under the cards for the dots. Swiper's own rule zeroes the padding,
+   so this needs the extra class to win. */
+.od-swiper .swiper {
+  padding-bottom: 36px;
+  /* The cards cast a soft shadow, and Swiper clips to its own edges. Widening
+     the box and padding the slides back in gives the shadow room to show. */
+  margin-inline: -16px;
+  padding-inline: 16px;
+}
