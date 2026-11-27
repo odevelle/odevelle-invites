@@ -139,6 +139,11 @@ export function buildSeedSql(): string {
           status === "published" ? r.publishedAt : null,
         ].map(lit).join(", ") + ");",
     );
+    const settings = r.rsvpSettings as { mealOptions: string[] } | null | undefined;
+    if (settings) {
+      const options = `array[${settings.mealOptions.map(lit).join(", ")}]::text[]`;
+      out.push(`insert into public.rsvp_settings (invitation_id, meal_options) values (${lit(r.id)}, ${options});`);
+    }
     for (const e of (r.events as Rec[]) ?? []) {
       out.push(
         "insert into public.invitation_events (id, invitation_id, kind, title, starts_at, ends_at, venue_name, address, latitude, longitude, map_url, dress_code, notes, rsvp_enabled, sort_order) values (" +

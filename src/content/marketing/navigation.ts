@@ -35,7 +35,8 @@ export const mobileNav: NavLink[] = [
   { label: "Contact", href: "/#begin" },
 ];
 
-export const clientLogin: NavLink = { label: "Client login", href: "/#client-login" };
+/** The couple's RSVP dashboard: /dashboard sends anyone signed out to /login. */
+export const clientLogin: NavLink = { label: "Couple Dashboard", href: "/dashboard" };
 
 export const footerNav: { title: string; links: NavLink[] }[] = [
   {

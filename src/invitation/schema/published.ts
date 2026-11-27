@@ -5,6 +5,16 @@ import { occasion, packageTier } from "./identity";
 import { invitationMedia } from "./media";
 import { isoDate, isoDateTime, optional, slug, text, timeZone, uuid } from "./primitives";
 
+/** The couple's RSVP options (mirrors rsvp_settings' checks). The guest limit is universal, not a setting. */
+export const rsvpSettings = z.strictObject({
+  mealOptions: z
+    .array(z.string().trim().min(1).max(40))
+    .max(6)
+    .refine((options) => new Set(options.map((o) => o.toLowerCase())).size === options.length, "Meal options must be distinct"),
+});
+
+export type RsvpSettings = z.infer<typeof rsvpSettings>;
+
 /**
  * The record `get_published_invitation(slug)` returns (camelCase JSON).
  *
@@ -28,6 +38,8 @@ export const publishedInvitationRecord = z.strictObject({
   designOptions: z.unknown(),
   features: featureToggles,
   publishedAt: isoDateTime,
+  /** rsvp_settings; null or absent: no meal question. */
+  rsvpSettings: rsvpSettings.nullish(),
   events: z.array(invitationEvent).max(30),
   media: z.array(invitationMedia).max(200),
 });

@@ -59,23 +59,36 @@ test.describe("routing rules", () => {
 });
 
 test.describe("proxy.ts", () => {
-  const call = (url: string) => proxy(new NextRequest(url, { headers: { host: new URL(url).host } }));
+  const call = async (url: string) => proxy(new NextRequest(url, { headers: { host: new URL(url).host } }));
 
   test("rewrites, redirects and 404s as the rules say", async () => {
-    const rewrite = call("https://chloe-shane.odevelle.com/?ref=1");
+    const rewrite = await call("https://chloe-shane.odevelle.com/?ref=1");
     expect(getRewrittenUrl(rewrite)).toBe("https://chloe-shane.odevelle.com/sites/chloe-shane?ref=1");
     expect(rewrite.headers.get("x-robots-tag")).toBe("noindex, nofollow");
 
-    const redirect = call("https://odevelle.com/sites/chloe-shane");
+    const redirect = await call("https://odevelle.com/sites/chloe-shane");
     expect(redirect.status).toBe(308);
     expect(getRedirectUrl(redirect)).toBe("https://chloe-shane.odevelle.com/");
 
-    const missing = call("https://admin.odevelle.com/");
+    const missing = await call("https://admin.odevelle.com/");
     expect(missing.status).toBe(404);
     expect(missing.headers.get("x-robots-tag")).toBe("noindex, nofollow");
     expect(await missing.text()).toContain("We couldn’t find this invitation");
 
-    expect(getRewrittenUrl(call("https://odevelle.com/features"))).toBeNull();
+    expect(getRewrittenUrl(await call("https://odevelle.com/features"))).toBeNull();
+  });
+
+  test("account pages are served from the root domain only, never cached or indexed", async () => {
+    for (const path of ["/login", "/dashboard", "/dashboard/chloe-shane", "/auth/confirm"]) {
+      const response = await call(`https://odevelle.com${path}`);
+      expect(response.status, path).toBe(200);
+      expect(response.headers.get("cache-control"), path).toBe("private, no-store");
+      expect(response.headers.get("x-robots-tag"), path).toBe("noindex, nofollow");
+    }
+    // Marketing pages stay cacheable; invitation subdomains have no account pages.
+    expect((await call("https://odevelle.com/features")).headers.get("cache-control")).toBeNull();
+    expect((await call("https://chloe-shane.odevelle.com/dashboard")).status).toBe(404);
+    expect((await call("https://chloe-shane.odevelle.com/login")).status).toBe(404);
   });
 
   test("runs for pages but not for Next's files or anything with an extension", () => {

@@ -6,6 +6,8 @@ import { mockFontFamilies } from "../../shared/mock-fonts";
 import { RichText } from "../../shared/RichText";
 import { floralV1 } from "./definition";
 import "./theme.css";
+import { RsvpForm } from "../../shared/rsvp/RsvpForm";
+import { rsvpClasses } from "./rsvp";
 
 /*
  * Floral v1: PROVISIONAL MOCK, replaced by the final design.
@@ -132,7 +134,11 @@ export default function FloralTheme({ invitation, options, appearance, features 
             <section data-section="rsvp" className="rounded-lg border border-dashed border-(--inv-primary) bg-white/60 p-8">
               <h2 className={`${heading} text-4xl`}>RSVP</h2>
               {content.rsvpNote && <p className="mt-2">{content.rsvpNote}</p>}
-              <p className="mt-2 text-sm opacity-70">Replies open soon.</p>
+              {invitation.rsvp && (
+              <div className="mt-6">
+                <RsvpForm slug={invitation.slug} hostsLine={invitation.hostsLine} rsvp={invitation.rsvp} classes={rsvpClasses} />
+              </div>
+            )}
             </section>
           )}
         </div>

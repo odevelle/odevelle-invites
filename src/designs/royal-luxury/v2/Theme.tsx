@@ -48,7 +48,14 @@ export default function RoyalLuxuryTheme({ invitation, options, appearance, feat
             </Silk>
           )}
           <MomentsGift photos={photos} isGallery={photos.length > 0} names={invitation.hostsLine} date={date} fontFamily={serifFont.style.fontFamily} art={art} />
-          {features.rsvp && <Rsvp note={content.rsvpNote} closing={content.closingMessage} art={art} />}
+          {features.rsvp && (
+            <Rsvp
+              note={content.rsvpNote}
+              closing={content.closingMessage}
+              art={art}
+              form={invitation.rsvp && { slug: invitation.slug, hostsLine: invitation.hostsLine, rsvp: invitation.rsvp }}
+            />
+          )}
           <Finale hosts={content.hosts.map((h) => h.displayName)} date={date} art={art} />
         </main>
       </Experience>

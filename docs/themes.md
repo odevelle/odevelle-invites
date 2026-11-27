@@ -35,6 +35,24 @@ A theme decides **how** things look: layout, components, section order, animatio
 Shared helpers in `src/designs/shared/` are optional: `appearanceVars` (palette → CSS variables),
 `RichText`, `Countdown` / `useCountdown`. Final themes can use them or write their own.
 
+**RSVP is not optional to build yourself.** When `invitation.rsvp` is present, render the shared form and style it
+with the version's own `rsvp.ts`:
+
+```tsx
+import { RsvpForm } from "../../shared/rsvp/RsvpForm";
+import { rsvpClasses } from "./rsvp"; // Partial<RsvpFormClasses>
+
+{invitation.rsvp && (
+  <RsvpForm slug={invitation.slug} hostsLine={invitation.hostsLine} rsvp={invitation.rsvp} classes={rsvpClasses} />
+)}
+```
+
+The form owns the questions (name, accept/decline, guest count 1–50, meal when the couple set options, message), validation
+messages, accessibility, the honeypot, retry de-duplication and the submission. `classes` maps each part
+(`src/designs/shared/rsvp/parts.ts`: `form`, `label`, `input`, `select`, `choice`, `submit`,
+`status`…) to the theme's own class names or Tailwind; unlisted parts use neutral defaults. A new theme adds styling
+only, never RSVP logic. Royal Luxury v2 (`sections/Finale.tsx`, "rsvp form" in `theme.css`) is the reference.
+
 **Testing convention:** mark the main blocks with `data-section="hero|countdown|events|story|gallery|custom|rsvp|music|video"`.
 The E2E suite checks behaviour through these markers rather than layout, so it keeps working when the visuals change.
 

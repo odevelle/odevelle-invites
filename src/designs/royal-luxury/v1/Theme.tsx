@@ -6,6 +6,8 @@ import { mockFontFamilies } from "../../shared/mock-fonts";
 import { RichText } from "../../shared/RichText";
 import { royalLuxuryV1 } from "./definition";
 import "./theme.css";
+import { RsvpForm } from "../../shared/rsvp/RsvpForm";
+import { rsvpClasses } from "./rsvp";
 
 /*
  * Royal Luxury v1: PROVISIONAL MOCK, replaced by the final design.
@@ -121,7 +123,11 @@ export default function RoyalLuxuryTheme({ invitation, options, appearance, feat
           <section data-section="rsvp" className="mt-12 border-t border-(--inv-accent) pt-8">
             <h2 className={`${heading} text-3xl`}>RSVP</h2>
             {content.rsvpNote && <p className="mt-2">{content.rsvpNote}</p>}
-            <p className="mt-2 text-sm opacity-70">Replies open soon.</p>
+            {invitation.rsvp && (
+              <div className="mt-6">
+                <RsvpForm slug={invitation.slug} hostsLine={invitation.hostsLine} rsvp={invitation.rsvp} classes={rsvpClasses} />
+              </div>
+            )}
           </section>
         )}
 

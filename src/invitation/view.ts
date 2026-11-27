@@ -4,6 +4,7 @@ import type { InvitationContent } from "./schema/content";
 import type { EventKind } from "./schema/events";
 import type { Occasion } from "./schema/identity";
 import type { InvitationMedia, MediaKind } from "./schema/media";
+import { rsvpRules } from "./rsvp/rules";
 
 /*
  * The shared invitation data contract: what every theme receives, whatever it
@@ -67,8 +68,17 @@ export type InvitationView = {
     audio?: MediaView;
     video?: MediaView;
   };
-  /** From the package; the RSVP form (Phase 6) caps party size with it. */
+  /** Present when the invitation takes replies. Render `RsvpForm` (src/designs/shared) with it. */
+  rsvp?: RsvpView;
+};
+
+export type RsvpView = {
+  /** When replies close (ISO instant); undefined: never. RsvpForm compares it with the visitor's clock. */
+  closesAt?: string;
+  /** Guests per reply, including the person replying. */
   maxPartySize: number;
+  /** Meal options to offer; empty: don't ask. */
+  mealOptions: string[];
 };
 
 export type MediaUrlResolver = (path: string) => string;
@@ -138,8 +148,13 @@ export function buildInvitationView(invitation: PublishedInvitation, mediaUrl: M
       audio: features.music ? ofKind("audio")[0] : undefined,
       video: features.video ? ofKind("video")[0] : undefined,
     },
-    maxPartySize: limits.maxPartySize,
+    rsvp: rsvpView(invitation),
   };
+}
+
+function rsvpView(invitation: PublishedInvitation): RsvpView | undefined {
+  const rules = rsvpRules(invitation);
+  return rules && { closesAt: rules.closesAt, maxPartySize: rules.maxPartySize, mealOptions: rules.mealOptions };
 }
 
 function joinNames(names: string[]): string {

@@ -40,9 +40,10 @@ test("slug format is identical in Postgres and TypeScript", () => {
 });
 
 test("reserved slugs are identical in Postgres and TypeScript", () => {
-  const block = sql.match(/insert into public\.reserved_slugs \(slug\) values([\s\S]*?);/i);
-  expect(block).not.toBeNull();
-  const fromSql = [...block![1].matchAll(/\('([^']+)'\)/g)].map((m) => m[1]).sort();
+  // Every migration that adds reserved slugs, in order.
+  const blocks = [...sql.matchAll(/insert into public\.reserved_slugs \(slug\) values([\s\S]*?);/gi)];
+  expect(blocks.length).toBeGreaterThan(0);
+  const fromSql = blocks.flatMap((b) => [...b[1].matchAll(/\('([^']+)'\)/g)].map((m) => m[1])).sort();
   expect(fromSql).toEqual([...RESERVED_SLUGS].sort());
 });
 

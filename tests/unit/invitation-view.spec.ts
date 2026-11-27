@@ -80,9 +80,9 @@ test.describe("buildInvitationView (the shared theme contract)", () => {
     expect(asSignature.ok && buildInvitationView(asSignature.invitation, url).content.customSections).toBeUndefined();
   });
 
-  test("passes the package's party-size limit to the RSVP form", async () => {
-    expect(buildInvitationView(await load("charlotte-henry"), url).maxPartySize).toBe(6);
-    expect(buildInvitationView(await load("elise-julien"), url).maxPartySize).toBe(20);
+  test("gives the RSVP form the universal 50-guest limit, whatever the package", async () => {
+    expect(buildInvitationView(await load("charlotte-henry"), url).rsvp?.maxPartySize).toBe(50);
+    expect(buildInvitationView(await load("elise-julien"), url).rsvp?.maxPartySize).toBe(50);
   });
 
   test("the same record renders through the same contract on any theme", async () => {

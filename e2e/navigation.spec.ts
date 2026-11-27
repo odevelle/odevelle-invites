@@ -6,7 +6,7 @@ test.describe("Desktop navigation", () => {
   test("shows the full header and scrolls to sections", async ({ page }) => {
     await page.goto("/");
     const nav = page.getByRole("navigation", { name: "Primary" });
-    for (const label of ["Designs", "How It Works", "Features", "Pricing", "Questions", "Contact", "Client login"]) {
+    for (const label of ["Designs", "How It Works", "Features", "Pricing", "Questions", "Contact", "Couple Dashboard"]) {
       await expect(nav.getByRole("link", { name: label, exact: true })).toBeVisible();
     }
     await expect(page.getByRole("button", { name: "Open menu" })).toBeHidden();
