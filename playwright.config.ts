@@ -44,7 +44,8 @@ export default defineConfig({
   webServer: process.env.E2E_BASE_URL
     ? undefined
     : {
-        command: `npm run build && npm run start -- --port ${PORT}`,
+        // Fixture invitations are enabled only for this test server; normal production builds never serve them.
+        command: `npm run build && ENABLE_INVITATION_FIXTURES=true npm run start -- --port ${PORT}`,
         url: baseURL,
         reuseExistingServer: !isCI,
         timeout: 180_000,

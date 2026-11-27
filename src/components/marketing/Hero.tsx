@@ -117,7 +117,7 @@ export function Hero() {
             </svg>
 
             <figcaption className="sr-only">
-              Two ODEVELLE invitations shown on phones: Royal Lace in cherry red and beige, and Azulejo in blue and white
+              Two ODEVELLE invitations shown on phones: Royal Luxury in cherry red and beige, and Azulejo in blue and white
               tiles.
             </figcaption>
           </figure>

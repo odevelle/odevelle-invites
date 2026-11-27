@@ -1,0 +1,33 @@
+/* Floral v1 (provisional mock). Plain CSS with a theme+version prefix: the project's Turbopack Tailwind rule treats *.module.css as global CSS, so CSS Modules can't be used here: linen texture and falling petals. */
+
+.fl1-linen {
+  background:
+    repeating-linear-gradient(0deg, color-mix(in srgb, var(--inv-primary) 7%, transparent) 0 1px, transparent 1px 3px),
+    repeating-linear-gradient(90deg, color-mix(in srgb, var(--inv-primary) 7%, transparent) 0 1px, transparent 1px 3px),
+    var(--inv-background);
+}
+
+.fl1-petals {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.fl1-petal {
+  position: absolute;
+  top: -24px;
+  width: 14px;
+  height: 10px;
+  border-radius: 70% 0;
+  background: color-mix(in srgb, var(--inv-accent) 80%, white);
+  animation: fl1-fall 3.2s ease-in both;
+}
+
+@keyframes fl1-fall {
+  to {
+    transform: translateY(110vh) rotate(300deg);
+    opacity: 0;
+  }
+}

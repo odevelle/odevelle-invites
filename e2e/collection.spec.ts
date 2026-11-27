@@ -1,6 +1,6 @@
 import { expect, test } from "./fixtures";
 
-const designs = ["Royal Lace", "Azulejo", "Embroidered Garden", "Pearl Shore"];
+const designs = ["Royal Luxury", "Azulejo", "Embroidered Garden", "Pearl Shore"];
 
 test.describe("Collection and design preview", () => {
   test.beforeEach(async ({ page }) => {
@@ -19,10 +19,10 @@ test.describe("Collection and design preview", () => {
   });
 
   test("opens the preview, cycles designs and closes", async ({ page }) => {
-    await page.getByRole("button", { name: "Preview the Royal Lace invitation" }).last().click();
+    await page.getByRole("button", { name: "Preview the Royal Luxury invitation" }).last().click();
     const dialog = page.getByRole("dialog", { name: "Invitation preview" });
     await expect(dialog).toBeVisible();
-    await expect(dialog.getByRole("heading", { level: 2 })).toHaveText("Royal Lace");
+    await expect(dialog.getByRole("heading", { level: 2 })).toHaveText("Royal Luxury");
     await expect(dialog).toContainText("Wedding collection · 01 / 04");
 
     await dialog.getByRole("button", { name: "Next design" }).click();
@@ -34,6 +34,27 @@ test.describe("Collection and design preview", () => {
 
     await dialog.getByRole("button", { name: "Close preview" }).click();
     await expect(dialog).toBeHidden();
+  });
+
+  test("Royal Luxury links to its live invitations and previews the real thing in each colourway", async ({ page }) => {
+    const card = page.locator('#designs [role=listitem][aria-label="Royal Luxury invitation"]');
+    await expect(card.getByRole("link", { name: /Cherry red/ })).toHaveAttribute("href", "/sites/rafael-isabel");
+    await expect(card.getByRole("link", { name: /Sage green/ })).toHaveAttribute("href", "/sites/chloe-shane");
+
+    await page.getByRole("button", { name: "Preview the Royal Luxury invitation" }).last().click();
+    const dialog = page.getByRole("dialog", { name: "Invitation preview" });
+    const live = dialog.locator("iframe");
+    await expect(live).toHaveAttribute("src", "/sites/rafael-isabel");
+    await expect(page.frameLocator("iframe").getByRole("button", { name: /open the invitation from rafael & isabel/i })).toBeVisible();
+
+    await dialog.getByRole("button", { name: "Sage green" }).click();
+    await expect(dialog.getByRole("button", { name: "Sage green" })).toHaveAttribute("aria-pressed", "true");
+    await expect(live).toHaveAttribute("src", "/sites/chloe-shane");
+    await expect(dialog.getByRole("link", { name: /View the full invitation/ })).toHaveAttribute("href", "/sites/chloe-shane");
+
+    // Designs still in the studio keep the illustrated preview.
+    await dialog.getByRole("button", { name: "Next design" }).click();
+    await expect(live).toHaveCount(0);
   });
 
   test("closes with Escape", async ({ page }) => {

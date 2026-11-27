@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { designs } from "@/content/marketing/designs";
 import { LoopingRow } from "./LoopingRow";
 import { Eye } from "./icons";
@@ -53,7 +54,19 @@ export function Collection() {
                   {d.theme}
                 </span>
                 <span className="absolute top-[11%] right-[14%] left-[14%] block transition-transform duration-600 ease-soft group-hover:-translate-y-2">
-                  <InviteMockup design={d.id} frame="paper" />
+                  {d.live ? (
+                    // A shipped design shows its real opening frame, not an illustration.
+                    <Image
+                      src={d.live.cover.src}
+                      width={d.live.cover.width}
+                      height={d.live.cover.height}
+                      alt={d.live.cover.alt}
+                      sizes="(min-width: 400px) 216px, 58vw"
+                      className="block h-auto w-full rounded-[1.6%/.9%] shadow-[0_24px_40px_-18px_rgba(31,36,32,.45),0_6px_14px_-8px_rgba(31,36,32,.25)]"
+                    />
+                  ) : (
+                    <InviteMockup design={d.id} frame="paper" />
+                  )}
                 </span>
               </PreviewTrigger>
               <div className="flex flex-auto flex-col items-center px-6 pt-6.5 pb-6 text-center">
@@ -70,6 +83,24 @@ export function Collection() {
                   <Eye size={18} />
                   Preview design
                 </PreviewTrigger>
+                {d.live && (
+                  <p className="mt-3.5 mb-0 flex flex-wrap items-center justify-center gap-x-3 gap-y-1 text-[14px] text-muted">
+                    See it live:
+                    {d.live.colourways.map((c) => (
+                      <a
+                        key={c.slug}
+                        href={`/sites/${c.slug}`}
+                        target="_blank"
+                        rel="noopener"
+                        className="link-draw inline-flex items-center gap-1.5 font-medium text-olive"
+                      >
+                        <span aria-hidden="true" className="h-2.5 w-2.5 rounded-full" style={{ background: c.swatch }} />
+                        {c.name}
+                        <span className="sr-only"> (opens in a new tab)</span>
+                      </a>
+                    ))}
+                  </p>
+                )}
               </div>
             </article>
           );

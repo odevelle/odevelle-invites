@@ -15,20 +15,50 @@ export type Design = {
   wash: string;
   /** Accessible description of the invitation mockup. */
   label: string;
+  /**
+   * For designs that have shipped as a real theme: the live demo invitations
+   * (one per colourway) and a frame of the real artwork for the gallery card,
+   * shown instead of the illustrated mockup.
+   */
+  live?: {
+    cover: { src: string; width: number; height: number; alt: string };
+    colourways: readonly LiveColourway[];
+  };
+};
+
+export type LiveColourway = {
+  name: string;
+  swatch: string;
+  /** Demo invitation slug (served at /sites/{slug}; the subdomain in production). */
+  slug: string;
+  /** Whether this colourway opens with the envelope video yet. */
+  intro: boolean;
 };
 
 export const designs: Design[] = [
   {
     id: "royal",
-    title: "Royal Lace",
+    title: "Royal Luxury",
     theme: "Royal",
-    mood: "Cherry red on soft beige, edged in lace and strung with pearls. For grand celebrations steeped in tradition.",
+    mood: "A wax sealed envelope opens onto lace, pearls and velvet in cherry red and ivory. Also in sage green.",
     story:
-      "A lace edged card in cherry red and soft beige, finished with strings of pearls and a small crest. Made for formal church weddings and grand receptions.",
-    palette: ["#9B1B30", "#F1E3D0", "#FFFDF8", "#CDBB9F"],
+      "Tap the wax seal and the envelope opens in shimmering pearl light onto lace and pearls. Velvet florals, a pearl framed countdown, illustrated venue cards, the order of the day and a photo your guests scratch to reveal. In cherry red, or sage green.",
+    palette: ["#5C0008", "#4B5B45", "#FFECDD", "#CC9E63"],
     wash: "radial-gradient(60% 50% at 18% 15%, #B3283F 0%, transparent 70%), radial-gradient(55% 45% at 85% 28%, #EAD5BF 0%, transparent 70%), radial-gradient(70% 60% at 25% 90%, #7E1426 0%, transparent 70%), radial-gradient(60% 50% at 90% 85%, #C2566A 0%, transparent 70%), #D9B8A4",
     label:
-      "Royal Lace digital wedding invitation, cherry red on beige with lace edging and pearls, for Charlotte and Henry.",
+      "Royal Luxury digital wedding invitation, cherry red on beige with lace edging and pearls, for Charlotte and Henry.",
+    live: {
+      cover: {
+        src: "/designs/royal-luxury/v2/intro-poster.webp",
+        width: 720,
+        height: 1280,
+        alt: "Royal Luxury invitation: a cream envelope sealed with gold wax, on cherry red velvet.",
+      },
+      colourways: [
+        { name: "Cherry red", swatch: "#5C0008", slug: "rafael-isabel", intro: true },
+        { name: "Sage green", swatch: "#4B5B45", slug: "chloe-shane", intro: false },
+      ],
+    },
   },
   {
     id: "azulejo",

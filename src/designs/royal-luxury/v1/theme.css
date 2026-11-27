@@ -1,0 +1,51 @@
+/* Royal Luxury v1 (provisional mock). Plain CSS with a theme+version prefix: the project's Turbopack Tailwind rule treats *.module.css as global CSS, so CSS Modules can't be used here: intro animations. */
+
+.rl1-envelope {
+  animation: rl1-envelope-open 900ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+
+@keyframes rl1-envelope-open {
+  from {
+    opacity: 0;
+    transform: translateY(24px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Lace curtain: two panels part to reveal the card. */
+.rl1-curtain {
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  display: flex;
+  pointer-events: none;
+}
+
+.rl1-curtain::before,
+.rl1-curtain::after {
+  content: "";
+  flex: 1;
+  background:
+    radial-gradient(circle, color-mix(in srgb, var(--inv-accent) 55%, transparent) 2px, transparent 2.5px) 0 0 / 14px 14px,
+    var(--inv-background);
+  animation: rl1-curtain-left 1200ms cubic-bezier(0.7, 0, 0.2, 1) 200ms both;
+}
+
+.rl1-curtain::after {
+  animation-name: rl1-curtain-right;
+}
+
+@keyframes rl1-curtain-left {
+  to {
+    transform: translateX(-100%);
+  }
+}
+
+@keyframes rl1-curtain-right {
+  to {
+    transform: translateX(100%);
+  }
+}
