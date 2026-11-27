@@ -1,0 +1,1246 @@
+/*
+ * Royal Luxury v2. Plain CSS with an `rl2-` prefix (CSS Modules don't work
+ * with this project's Turbopack Tailwind rule; see docs/themes.md).
+ *
+ * --rl2-u is one PSD pixel: the 720px artboard scaled to the viewport on
+ * phones, 1:1 from 720px up. All sizes are PSD measurements × --rl2-u.
+ */
+
+@property --rl2-u {
+  syntax: "<length>";
+  inherits: true;
+  initial-value: 0.5px;
+}
+
+.rl2-root {
+  container: rl2 / inline-size;
+  --rl2-ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+  --rl2-ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --rl2-ease-ink: cubic-bezier(0.45, 0.05, 0.35, 1);
+  /* Colourway colours and artwork (--rl2-ground, --rl2-lace-top, …) are set inline from assets.ts. */
+  --rl2-gold-line: #f0a830;
+}
+
+.rl2 {
+  --rl2-u: calc(min(100cqw, 720px) / 720);
+  position: relative;
+  overflow-x: clip;
+  background: var(--rl2-ground);
+  color: var(--inv-primary);
+  font-family: var(--inv-body-font);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+.rl2-section {
+  position: relative;
+}
+
+.rl2-col {
+  position: relative;
+  width: calc(720 * var(--rl2-u));
+  margin-inline: auto;
+}
+
+.rl2-fill {
+  position: absolute;
+  inset: 0;
+}
+
+.rl2-art {
+  position: absolute;
+  max-width: none;
+  height: auto;
+  user-select: none;
+  -webkit-user-drag: none;
+  pointer-events: none;
+}
+
+/* Wide screens: paper plates continue as their mirror image on both sides. */
+.rl2-mirror {
+  display: none;
+  transform: scaleX(-1);
+}
+@container rl2 (min-width: 721px) {
+  .rl2-mirror {
+    display: block;
+  }
+}
+
+.rl2-z1 { z-index: 1; }
+.rl2-z2 { z-index: 2; }
+.rl2-z3 { z-index: 3; }
+.rl2-z4 { z-index: 4; }
+.rl2-z5 { z-index: 5; }
+.rl2-z6 { z-index: 6; }
+
+/* ------------------------------------------------------------ typography */
+
+.rl2-script {
+  display: flex;
+  justify-content: center;
+  margin: 0;
+  /* room for swashes, so reveal masks never crop them */
+  padding: 0.18em 0.4em;
+  font-family: var(--inv-heading-font);
+  font-weight: 400;
+  line-height: 1.2;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.rl2-serif {
+  font-family: var(--inv-body-font);
+  font-optical-sizing: auto;
+}
+
+.rl2-ink { color: var(--inv-primary); }
+.rl2-cream { color: var(--inv-secondary); }
+.rl2-cream-warm { color: color-mix(in srgb, var(--inv-secondary) 79%, #fcb070); }
+.rl2-caps { text-transform: uppercase; }
+
+/* ------------------------------------------------------------------ hero */
+
+.rl2-hero {
+  background: var(--rl2-ground-hero);
+}
+
+.rl2-hero__names {
+  margin: 0;
+  font-size: inherit;
+}
+
+.rl2-hero__invite {
+  margin: 0;
+  font-size: calc(35 * var(--rl2-u));
+  font-style: italic;
+  font-variation-settings: "opsz" 72;
+  line-height: 0.99;
+  text-align: center;
+}
+
+.rl2-hero__name {
+  font-size: calc(84 * var(--rl2-u));
+}
+
+.rl2-amp {
+  display: inline-block;
+  aspect-ratio: 264 / 248;
+  background: currentColor;
+  mask: var(--rl2-amp) center / contain no-repeat;
+}
+
+.rl2-finale__amp {
+  width: 0.6em;
+  margin-inline: 0.3em;
+  vertical-align: -0.34em;
+}
+
+.rl2-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.rl2-hero__parents {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0;
+  font-size: max(11px, calc(25.4 * var(--rl2-u)));
+  font-style: italic;
+  font-weight: 500;
+  line-height: 0.92;
+  text-align: center;
+}
+
+.rl2-hero__line {
+  margin: 0;
+  font-size: max(12px, calc(27 * var(--rl2-u)));
+  font-style: italic;
+  line-height: 1.15;
+  text-align: center;
+}
+
+.rl2-hero__date {
+  margin: 0;
+  font-size: calc(57 * var(--rl2-u));
+  font-style: italic;
+  font-variation-settings: "opsz" 36;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  text-align: center;
+  white-space: nowrap;
+}
+
+/* ------------------------------------------------------------- countdown */
+
+.rl2-countdown-section {
+  background: linear-gradient(var(--rl2-ground-hero), var(--rl2-ground-deep));
+}
+
+.rl2-hero + .rl2-locations {
+  margin-top: calc(200 * var(--rl2-u));
+}
+
+/* Animated pearl frame: slices of the designer's video (see AnimatedPearls). */
+.rl2-pearls > span {
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  pointer-events: none;
+}
+
+.rl2-pearls__glint {
+  opacity: 0;
+  mix-blend-mode: plus-lighter;
+}
+
+.rl2-countdown__title {
+  font-size: calc(67 * var(--rl2-u));
+}
+
+.rl2-countdown__unit {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: var(--inv-secondary);
+  text-align: center;
+}
+
+.rl2-countdown__value {
+  font-family: var(--inv-body-font);
+  font-size: calc(68 * var(--rl2-u));
+  font-variant-numeric: lining-nums tabular-nums;
+  font-variation-settings: "opsz" 36;
+  line-height: 1;
+}
+
+.rl2-countdown__label {
+  margin-top: calc(-7 * var(--rl2-u));
+  font-family: var(--inv-body-font);
+  font-size: max(9px, calc(18.5 * var(--rl2-u)));
+  font-style: italic;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+/* ------------------------------------------------------------- locations */
+
+.rl2-locations {
+  background: #ffecdd var(--rl2-mesh) repeat;
+  background-size: calc(110 * var(--rl2-u)) calc(90 * var(--rl2-u));
+}
+
+.rl2-lace {
+  position: absolute;
+  left: 0;
+  right: 0;
+  z-index: 3;
+  height: calc(210 * var(--rl2-u));
+  background-repeat: repeat-x;
+  background-size: calc(195 * var(--rl2-u)) calc(210 * var(--rl2-u));
+  /* a tile starts at column x = 68, as in the PSD */
+  background-position: calc(50% - 194.5 * var(--rl2-u)) 0;
+  pointer-events: none;
+}
+
+.rl2-lace--top {
+  top: calc(-65 * var(--rl2-u));
+  background-image: var(--rl2-lace-top);
+}
+
+.rl2-lace--bottom {
+  bottom: calc(-76 * var(--rl2-u));
+  background-image: var(--rl2-lace-bottom);
+}
+
+.rl2-locations__title {
+  font-size: calc(93 * var(--rl2-u));
+}
+
+.rl2-card__text {
+  text-align: center;
+}
+
+.rl2-card__venue {
+  margin: 0;
+  font-size: calc(50 * var(--rl2-u));
+  font-weight: 400;
+  font-variation-settings: "opsz" 36;
+  line-height: 1.04;
+  text-transform: uppercase;
+  text-wrap: balance;
+}
+
+.rl2-card__place {
+  margin: calc(-4 * var(--rl2-u)) 0 0;
+  font-size: max(12px, calc(30 * var(--rl2-u)));
+  line-height: 1.18;
+}
+
+.rl2-card__time {
+  margin: calc(-2 * var(--rl2-u)) 0 0;
+  font-size: max(12px, calc(31 * var(--rl2-u)));
+  font-weight: 500;
+  line-height: 1.2;
+}
+
+.rl2-card__actions {
+  z-index: 1;
+  display: flex;
+  justify-content: space-between;
+}
+
+.rl2-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: calc(260 * var(--rl2-u));
+  height: 100%;
+  border: max(1px, calc(1.4 * var(--rl2-u))) solid var(--rl2-gold-line);
+  border-radius: calc(22 * var(--rl2-u));
+  background: linear-gradient(var(--rl2-ground-raised), var(--rl2-ground));
+  color: var(--inv-secondary);
+  font: 500 max(10px, calc(19 * var(--rl2-u))) / 1 var(--inv-body-font);
+  letter-spacing: 0.16em;
+  text-decoration: none;
+  text-transform: uppercase;
+  transition:
+    box-shadow 0.5s var(--rl2-ease),
+    filter 0.5s var(--rl2-ease);
+}
+
+.rl2-btn--start { padding-right: calc(86 * var(--rl2-u)); }
+.rl2-btn--end { padding-left: calc(86 * var(--rl2-u)); }
+
+a.rl2-btn:hover {
+  box-shadow: 0 0 calc(22 * var(--rl2-u)) rgb(240 168 48 / 0.45);
+  filter: brightness(1.15);
+}
+
+a.rl2-btn:active {
+  filter: brightness(0.95);
+}
+
+a.rl2-btn:focus-visible {
+  outline: 2px solid var(--rl2-gold-line);
+  outline-offset: 3px;
+}
+
+.rl2-card__bouquet {
+  z-index: 2;
+}
+
+/* ------------------------------------------------- order of the day / silk */
+
+.rl2-silk {
+  position: relative;
+  background: var(--rl2-ground-silk);
+}
+
+.rl2-silk__col {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: calc(50% - 360 * var(--rl2-u));
+  width: calc(720 * var(--rl2-u));
+}
+
+.rl2-order__strands { z-index: 1; }
+
+.rl2-sway {
+  z-index: 1;
+  transform-origin: 50% 0;
+}
+
+.rl2-order__velvet { z-index: 1; }
+
+.rl2-order__title {
+  font-size: calc(85 * var(--rl2-u));
+  word-spacing: 0.08em;
+}
+
+.rl2-order__subtitle,
+.rl2-dress__code {
+  margin: 0;
+  font-size: max(11px, calc(30 * var(--rl2-u)));
+  font-weight: 300;
+  letter-spacing: 0.02em;
+  line-height: 1.2;
+  text-align: center;
+}
+
+.rl2-order__line {
+  z-index: 1;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.rl2-order__line path {
+  fill: none;
+  stroke: #c9a06a;
+  stroke-width: 1.5;
+  stroke-dasharray: 1;
+  stroke-linecap: round;
+}
+
+.rl2-order__list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.rl2-moment__dot {
+  z-index: 2;
+  height: calc(21 * var(--rl2-u));
+  border-radius: 50%;
+  background: radial-gradient(circle at 38% 34%, #e6c48f, #cc9e63 55%, #a77a42);
+  box-shadow: 0 0 calc(12 * var(--rl2-u)) rgb(204 158 99 / 0.4);
+}
+
+.rl2-moment__icon { z-index: 2; }
+
+.rl2-moment__label {
+  z-index: 2;
+  margin: 0;
+  transform: translateY(-50%);
+  font-size: max(11px, calc(34 * var(--rl2-u)));
+  font-weight: 300;
+  letter-spacing: 0.05em;
+  line-height: 1.12;
+  text-wrap: balance;
+}
+
+.rl2-moment__label--left { text-align: right; }
+
+.rl2-moment__text { display: inline-block; }
+
+.rl2-moment__time {
+  display: block;
+  margin-bottom: 0.18em;
+  font-size: 0.94em;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+}
+
+/* ------------------------------------------------------------ dress code */
+
+/*
+ * The ivory hill: an ellipse cresting at y 382 above column x 355. The PSD's
+ * (semi-axes 520 x 255) on phones; wider screens get a wider ellipse with a
+ * similar curvature at the crest (b = a² / R), so it stays a gentle hill
+ * instead of an arch. Elsewhere the floor continues below its widest point.
+ */
+.rl2-dress__hill {
+  --a: 520;
+  --b: 255;
+  position: absolute;
+  left: calc((355 - var(--a)) * var(--rl2-u));
+  top: calc(382 * var(--rl2-u));
+  width: calc(2 * var(--a) * var(--rl2-u));
+  height: calc(2 * var(--b) * var(--rl2-u));
+  border-radius: 50%;
+  background: var(--inv-background);
+}
+
+/* Sized so the hill still spans the screen where the section ends (y 702). */
+@container rl2 (min-width: 1000px) {
+  .rl2-dress__hill { --a: 900; --b: 764; }
+}
+
+@container rl2 (min-width: 1500px) {
+  .rl2-dress__hill { --a: 1400; --b: 1089; }
+}
+
+.rl2-dress__floor {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(637 * var(--rl2-u));
+  bottom: -1px;
+  background: var(--inv-background);
+}
+
+@container rl2 (min-width: 1000px) and (max-width: 1959px) {
+  .rl2-dress__floor { display: none; }
+}
+
+.rl2-dress__title {
+  font-size: calc(84 * var(--rl2-u));
+  word-spacing: 0.32em;
+}
+
+.rl2-dress__code { letter-spacing: 0.07em; }
+
+.rl2-dress__couple { z-index: 1; }
+
+.rl2-dress__note {
+  z-index: 2;
+  margin: 0;
+  font-size: max(12px, calc(25.4 * var(--rl2-u)));
+  font-style: italic;
+  text-align: center;
+}
+
+/* ------------------------------------------------------ moments and gift */
+
+.rl2-sheet {
+  background: var(--inv-background);
+}
+
+.rl2-sheet__band {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(1264 * var(--rl2-u));
+  bottom: 0;
+  background: var(--rl2-ground);
+}
+
+.rl2-moments__title {
+  z-index: 1;
+  font-size: calc(101 * var(--rl2-u));
+  word-spacing: 0.22em;
+}
+
+/* The envelope's shadow on the ground below it (a layer style in the PSD). */
+.rl2-gift__shadow {
+  background: linear-gradient(color-mix(in srgb, var(--rl2-shade) 55%, transparent), transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+}
+
+.rl2-gift__title {
+  font-size: calc(95 * var(--rl2-u));
+}
+
+.rl2-gift__text {
+  margin: 0;
+  color: var(--inv-primary);
+  font-size: max(12px, calc(35 * var(--rl2-u)));
+  letter-spacing: 0.01em;
+  line-height: 1.5;
+  text-align: center;
+}
+
+/* Scratch card */
+.rl2-scratch {
+  z-index: 1;
+}
+
+.rl2-scratch__reveal {
+  position: absolute;
+  inset: 0;
+  clip-path: ellipse(50% 50%);
+  background: var(--inv-background);
+  visibility: hidden;
+}
+
+.rl2-scratch:not([data-state="covered"]) .rl2-scratch__reveal {
+  visibility: visible;
+}
+
+.rl2-scratch__photo {
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 1.6s var(--rl2-ease);
+}
+
+.rl2-scratch__photo[data-active] {
+  opacity: 1;
+}
+
+.rl2-scratch__fallback {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: calc(10 * var(--rl2-u));
+  background: radial-gradient(ellipse at 50% 42%, #fff7f0, #f4e3d8);
+  color: var(--inv-primary);
+}
+
+.rl2-scratch__names {
+  padding: 0 0.3em;
+  font-size: calc(52 * var(--rl2-u));
+  line-height: 1.2;
+  white-space: normal;
+}
+
+.rl2-scratch__date {
+  font-size: calc(40 * var(--rl2-u));
+  font-style: italic;
+}
+
+/* Server-rendered lettering, until the canvas has painted the same thing. */
+.rl2-scratch__label {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  padding-top: calc(10 * var(--rl2-u));
+  transform: translateX(calc(-10 * var(--rl2-u)));
+  color: #c0c0c0;
+  font-size: calc(35.5 * var(--rl2-u));
+  line-height: 1.24;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.rl2-scratch:not([data-state="covered"]) .rl2-scratch__label {
+  visibility: hidden;
+}
+
+.rl2-scratch__cover {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  clip-path: ellipse(50% 50%);
+  cursor: grab;
+  touch-action: none;
+  transition: opacity 1.1s var(--rl2-ease);
+}
+
+.rl2-scratch__cover:active {
+  cursor: grabbing;
+}
+
+.rl2-scratch[data-state="covered"] .rl2-scratch__cover {
+  opacity: 0;
+}
+
+.rl2-scratch[data-state="revealing"] .rl2-scratch__cover {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* A soft sheen crosses the card once it comes into view, inviting a touch. */
+.rl2-scratch[data-state="ready"]::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  clip-path: ellipse(50% 50%);
+  background: linear-gradient(105deg, transparent 38%, rgb(255 255 255 / 0.6) 50%, transparent 62%) no-repeat;
+  background-size: 260% 100%;
+  background-position: 130% 0;
+  pointer-events: none;
+}
+
+[data-shown] .rl2-scratch[data-state="ready"]::after {
+  animation: rl2-sheen 2.4s var(--rl2-ease) 1.2s 2;
+}
+
+@keyframes rl2-sheen {
+  from { background-position: 130% 0; }
+  to { background-position: -30% 0; }
+}
+
+.rl2-scratch__key {
+  position: absolute;
+  left: 50%;
+  bottom: calc(40 * var(--rl2-u));
+  translate: -50% 0;
+  padding: 6px 14px;
+  border: 1px solid var(--inv-primary);
+  border-radius: 999px;
+  background: var(--inv-background);
+  color: var(--inv-primary);
+  font: italic 14px / 1 var(--inv-body-font);
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.rl2-scratch__key:focus-visible {
+  clip-path: none;
+  outline: 2px solid var(--inv-accent);
+  outline-offset: 2px;
+}
+
+/* ------------------------------------------------------- rsvp and finale */
+
+.rl2-rsvp,
+.rl2-finale {
+  background: var(--rl2-ground);
+}
+
+.rl2-rsvp__title {
+  margin: 0;
+  color: var(--inv-secondary);
+  font-size: calc(97 * var(--rl2-u));
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  line-height: 1;
+  text-align: center;
+}
+
+.rl2-rsvp__body {
+  text-align: center;
+}
+
+.rl2-rsvp__note {
+  margin: 0 0 calc(22 * var(--rl2-u));
+  font-size: max(13px, calc(32 * var(--rl2-u)));
+  font-style: italic;
+  line-height: 1.3;
+}
+
+.rl2-rsvp__status {
+  margin: 0;
+  font-size: max(10px, calc(20 * var(--rl2-u)));
+  letter-spacing: 0.3em;
+  opacity: 0.78;
+}
+
+.rl2-rsvp__closing {
+  margin: calc(70 * var(--rl2-u)) 0 0;
+  font-size: max(12px, calc(28 * var(--rl2-u)));
+  font-style: italic;
+  line-height: 1.35;
+}
+
+.rl2-finale__veil {
+  mix-blend-mode: screen;
+}
+
+.rl2-finale__names {
+  color: var(--inv-secondary);
+  word-spacing: 0.12em;
+}
+
+.rl2-finale__date {
+  margin: 0;
+  color: var(--inv-secondary);
+  font-size: calc(57 * var(--rl2-u));
+  font-style: italic;
+  font-variation-settings: "opsz" 36;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  text-align: center;
+  white-space: nowrap;
+}
+
+/* ------------------------------------------------------------------ music */
+
+.rl2-music {
+  position: fixed;
+  right: max(16px, env(safe-area-inset-right));
+  bottom: max(16px, env(safe-area-inset-bottom));
+  z-index: 40;
+  display: grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  border: 1px solid var(--inv-accent);
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--rl2-music) 82%, transparent);
+  box-shadow: 0 6px 22px rgb(0 0 0 / 0.28);
+  color: var(--inv-secondary);
+  backdrop-filter: blur(6px);
+  transition: opacity 0.6s var(--rl2-ease);
+}
+
+.rl2-music svg { width: 20px; height: 20px; }
+.rl2-music[data-state="paused"] svg { opacity: 0.55; }
+.rl2-music:focus-visible { outline: 2px solid var(--inv-accent); outline-offset: 3px; }
+
+.rl2-experience:not([data-revealed]) .rl2-music {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* ------------------------------------------------------------------ intro */
+
+html:has(.rl2-intro) {
+  overflow: hidden;
+}
+
+.rl2-intro {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  display: flex;
+  justify-content: center;
+  background: radial-gradient(120% 90% at 50% 50%, var(--rl2-intro-1) 0%, var(--rl2-intro-2) 62%, var(--rl2-intro-3) 100%);
+  overscroll-behavior: none;
+  touch-action: none;
+  transition:
+    opacity 1.3s var(--rl2-ease),
+    visibility 0s linear 1.3s;
+}
+
+.rl2-intro[data-phase="leaving"] {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.rl2-intro__stage {
+  position: relative;
+  height: 100%;
+  max-width: 100%;
+  aspect-ratio: 9 / 16;
+  overflow: hidden;
+  container-type: size;
+  box-shadow: 0 0 90px rgb(0 0 0 / 0.5);
+  transition: scale 1.3s var(--rl2-ease-out);
+}
+
+.rl2-intro[data-phase="leaving"] .rl2-intro__stage {
+  scale: 1.04;
+}
+
+.rl2-intro__media {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.rl2-intro__video {
+  opacity: 0;
+}
+
+.rl2-intro__video[data-playing] {
+  opacity: 1;
+}
+
+/* The seal, wherever object-fit: cover puts it (the video is 56.25cqh wide). */
+.rl2-intro__halo,
+.rl2-intro__bloom {
+  position: absolute;
+  left: calc(50% + (var(--seal-x) - 0.5) * 56.25cqh);
+  top: calc(var(--seal-y) * 100%);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  translate: -50% -50%;
+  pointer-events: none;
+}
+
+.rl2-intro__halo {
+  width: calc(0.37 * 56.25cqh);
+  box-shadow:
+    0 0 0 1px rgb(255 255 252 / 0.7),
+    0 0 4cqh 0.5cqh rgb(243 242 237 / 0.45),
+    inset 0 0 3cqh rgb(243 242 237 / 0.25);
+  animation: rl2-halo 2.8s ease-in-out infinite;
+}
+
+.rl2-intro__stage:has(.rl2-intro__tap:focus-visible) .rl2-intro__halo {
+  box-shadow:
+    0 0 0 2px #fffefa,
+    0 0 4cqh 1cqh rgb(243 242 237 / 0.65);
+}
+
+.rl2-intro:not([data-phase="idle"]) .rl2-intro__halo {
+  animation: none;
+  opacity: 0;
+  transition: opacity 0.35s ease;
+}
+
+@keyframes rl2-halo {
+  0%,
+  100% { opacity: 0.5; scale: 0.95; }
+  50% { opacity: 1; scale: 1.06; }
+}
+
+/* The seal breaking: a burst of pearl light with a faint nacre ring. */
+.rl2-intro__bloom {
+  width: calc(0.95 * 56.25cqh);
+  background: radial-gradient(
+    circle,
+    rgb(255 255 253 / 0.95) 0%,
+    rgb(243 242 237 / 0.62) 22%,
+    rgb(232 234 244 / 0.24) 38%,
+    rgb(246 232 236 / 0.16) 50%,
+    transparent 68%
+  );
+  mix-blend-mode: screen;
+  opacity: 0;
+  scale: 0.2;
+}
+
+.rl2-intro[data-phase="opening"] .rl2-intro__bloom {
+  animation: rl2-bloom 1.9s var(--rl2-ease-out) forwards;
+}
+
+@keyframes rl2-bloom {
+  0% { opacity: 0; scale: 0.2; }
+  22% { opacity: 1; }
+  100% { opacity: 0; scale: 2.3; }
+}
+
+/*
+ * As the flaps part, the envelope opens onto pearl light (#F3F2ED), never the
+ * video's flat white paper. Layers, driven from the video clock by
+ * IntroductionScreen:
+ *  - pearl (--pearl, full before any paper shows): multiply gives the paper a
+ *    pearl's body, bright at the centre and softly grey toward the edges (the
+ *    paper's embossing shows through), while the velvet stays as it is;
+ *  - flare (--glow): a soft screen bloom at the centre, held below pure white
+ *    so the pearl keeps its depth;
+ *  - nacre (--glow): the iridescence of mother of pearl, faint pink,
+ *    lavender, blue, mint and champagne, slowly turning;
+ *  - dust (--glow): fine points of light that twinkle, the pearl's sheen;
+ *  - glint (--glow): a band of light sweeping across, as on a polished pearl.
+ * At the cut the flare blooms to full, then the overlay dissolves into the
+ * invitation.
+ */
+.rl2-intro__pearl,
+.rl2-intro__flare,
+.rl2-intro__nacre,
+.rl2-intro__dust,
+.rl2-intro__glint {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.rl2-intro__pearl {
+  background: radial-gradient(80% 60% at 50% 44%, #fffefb 0%, #f3f2ed 40%, #e5e3db 76%, #d6d3c9 100%);
+  mix-blend-mode: multiply;
+  opacity: var(--pearl, 0);
+}
+
+.rl2-intro__flare {
+  background: radial-gradient(48% 34% at 50% 46%, rgb(255 255 253 / 0.9), rgb(243 242 237 / 0.5) 45%, transparent 80%);
+  mix-blend-mode: screen;
+  opacity: calc(var(--glow, 0) * 0.55);
+  scale: calc(1 + var(--glow, 0) * 0.35);
+}
+
+.rl2-intro__nacre {
+  /* Soft pools of mother-of-pearl colour, oversized so turning never shows an edge. */
+  inset: -40%;
+  background:
+    radial-gradient(26% 20% at 34% 38%, #f2dbe3, transparent 70%),
+    radial-gradient(24% 22% at 64% 34%, #e1def1, transparent 70%),
+    radial-gradient(28% 20% at 66% 62%, #d6e5ee, transparent 70%),
+    radial-gradient(24% 20% at 38% 64%, #dbebdf, transparent 70%),
+    radial-gradient(30% 24% at 50% 50%, #f2e8d0, transparent 75%);
+  mix-blend-mode: multiply;
+  opacity: calc(var(--glow, 0) * 0.75);
+}
+
+/* Pearl dust: points of light scattered irregularly (several dots per large tile, two tile sizes). */
+.rl2-intro__dust,
+.rl2-intro__dust::after {
+  --rl2-dot: radial-gradient(circle, #fff 0 0.6px, transparent 1.3px);
+  --rl2-dot-l: radial-gradient(circle, #fff 0 1px, rgb(255 255 255 / 0.4) 1.4px, transparent 2.2px);
+  mix-blend-mode: screen;
+}
+
+.rl2-intro__dust {
+  background:
+    var(--rl2-dot-l) 23px 41px / 173px 211px,
+    var(--rl2-dot) 97px 13px / 173px 211px,
+    var(--rl2-dot) 141px 118px / 173px 211px,
+    var(--rl2-dot) 61px 167px / 173px 211px,
+    var(--rl2-dot-l) 128px 186px / 173px 211px,
+    var(--rl2-dot) 9px 102px / 119px 157px,
+    var(--rl2-dot) 77px 61px / 119px 157px,
+    var(--rl2-dot) 44px 139px / 119px 157px;
+  opacity: var(--glow, 0);
+}
+
+.rl2-intro__dust::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    var(--rl2-dot-l) 71px 23px / 151px 193px,
+    var(--rl2-dot) 13px 78px / 151px 193px,
+    var(--rl2-dot) 118px 131px / 151px 193px,
+    var(--rl2-dot-l) 39px 171px / 151px 193px,
+    var(--rl2-dot) 101px 49px / 107px 137px,
+    var(--rl2-dot) 27px 116px / 107px 137px;
+  opacity: 0;
+}
+
+.rl2-intro__glint {
+  background: linear-gradient(
+      112deg,
+      transparent 34%,
+      rgb(255 255 255 / 0.25) 43%,
+      rgb(255 255 255 / 0.95) 49.5%,
+      rgb(255 255 255 / 0.95) 50.5%,
+      rgb(255 255 255 / 0.25) 57%,
+      transparent 66%
+    )
+    no-repeat;
+  background-size: 260% 100%;
+  background-position: 130% 0;
+  mix-blend-mode: screen;
+  opacity: var(--glow, 0);
+}
+
+.rl2-intro:is([data-phase="opening"], [data-phase="leaving"]) .rl2-intro__nacre {
+  animation: rl2-nacre 9s linear infinite;
+}
+
+.rl2-intro:is([data-phase="opening"], [data-phase="leaving"]) .rl2-intro__dust::after {
+  animation: rl2-twinkle 1.1s ease-in-out infinite alternate;
+}
+
+.rl2-intro:is([data-phase="opening"], [data-phase="leaving"]) .rl2-intro__glint {
+  animation: rl2-glint 1.4s var(--rl2-ease) 1.2s infinite;
+}
+
+@keyframes rl2-nacre {
+  to { rotate: 1turn; }
+}
+
+@keyframes rl2-twinkle {
+  to { opacity: 1; }
+}
+
+@keyframes rl2-glint {
+  from { background-position: 130% 0; }
+  to { background-position: -30% 0; }
+}
+
+.rl2-intro[data-phase="leaving"] .rl2-intro__pearl {
+  opacity: 1;
+}
+
+.rl2-intro[data-phase="leaving"] .rl2-intro__flare {
+  animation: rl2-flare-out 0.8s var(--rl2-ease-out) forwards;
+}
+
+@keyframes rl2-flare-out {
+  from { opacity: 0.55; scale: 1.35; }
+  to { opacity: 1; scale: 2.2; }
+}
+
+.rl2-intro__wash {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(65% 45% at calc(var(--seal-x) * 100%) calc(var(--seal-y) * 100%), rgb(243 242 237 / 0.34), transparent 72%);
+  mix-blend-mode: screen;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.rl2-intro[data-phase="opening"] .rl2-intro__wash {
+  animation: rl2-wash 2.6s ease-out forwards;
+}
+
+@keyframes rl2-wash {
+  0% { opacity: 0; }
+  28% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+.rl2-intro__tap {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.rl2-intro__tap:focus-visible {
+  outline: none;
+}
+
+.rl2-intro__hint {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(var(--seal-y) * 100% + 0.37 * 56.25cqh * 0.5 + 3.2cqh);
+  color: #fce8d8;
+  font-family: var(--inv-body-font);
+  font-size: clamp(14px, 2.3cqh, 22px);
+  font-style: italic;
+  letter-spacing: 0.08em;
+  text-align: center;
+  text-shadow:
+    0 1px 14px color-mix(in srgb, var(--rl2-intro-shade) 90%, transparent),
+    0 0 2px color-mix(in srgb, var(--rl2-intro-shade) 70%, transparent);
+  animation: rl2-hint 2.8s ease-in-out infinite;
+}
+
+.rl2-intro:not([data-phase="idle"]) .rl2-intro__hint {
+  opacity: 0;
+  animation: none;
+  transition: opacity 0.3s ease;
+}
+
+@keyframes rl2-hint {
+  0%,
+  100% { opacity: 0.72; }
+  50% { opacity: 1; }
+}
+
+.rl2-intro__skip {
+  position: absolute;
+  top: max(14px, env(safe-area-inset-top));
+  right: 14px;
+  padding: 7px 14px;
+  border: 1px solid rgb(252 232 216 / 0.45);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--rl2-intro-shade) 35%, transparent);
+  color: #fce8d8;
+  font: italic 13px / 1 var(--inv-body-font);
+  letter-spacing: 0.06em;
+  animation: rl2-skip-in 0.6s ease 1.4s both;
+}
+
+@keyframes rl2-skip-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* ---------------------------------------------------------------- reveals */
+
+@media (scripting: enabled) and (prefers-reduced-motion: no-preference) {
+  .rl2 [data-reveal] {
+    opacity: 0;
+    transition:
+      opacity 1.1s var(--rl2-ease) var(--rl2-d, 0ms),
+      translate 1.4s var(--rl2-ease-out) var(--rl2-d, 0ms),
+      scale 1.5s var(--rl2-ease-out) var(--rl2-d, 0ms),
+      clip-path 2s var(--rl2-ease-ink) var(--rl2-d, 0ms),
+      mask-position 2s var(--rl2-ease-ink) var(--rl2-d, 0ms);
+  }
+
+  .rl2 [data-reveal="rise"] { translate: 0 calc(26 * var(--rl2-u)); }
+  .rl2 [data-reveal="rise-slow"] {
+    translate: 0 calc(60 * var(--rl2-u));
+    transition-duration: 1.6s, 2s, 1.5s, 2s, 2s;
+  }
+  .rl2 [data-reveal="from-left"] { translate: calc(-44 * var(--rl2-u)) 0; }
+  .rl2 [data-reveal="from-right"] { translate: calc(44 * var(--rl2-u)) 0; }
+  .rl2 [data-reveal="descend"] { translate: 0 calc(-34 * var(--rl2-u)); }
+  .rl2 [data-reveal="pop"] { scale: 0; }
+  .rl2 [data-reveal="bloom"] { scale: 0.8; }
+  .rl2 [data-reveal="frame"] { scale: 0.96; }
+  .rl2 [data-reveal="settle"] { scale: 0.92; }
+  .rl2 [data-reveal="card"] { translate: 0 calc(48 * var(--rl2-u)); }
+  .rl2 [data-reveal="plate"] {
+    scale: 1.035;
+    transition-duration: 1.6s, 2.6s, 2.8s;
+  }
+
+  /* Script lettering appears as if written: a soft-edged mask sweeps left to right. */
+  .rl2 [data-reveal="write"] {
+    mask-image: linear-gradient(90deg, #000 44%, transparent 56%);
+    mask-size: 240% 100%;
+    mask-repeat: no-repeat;
+    mask-position: 100% 0;
+    transition-duration: 0.5s, 1.4s, 1.5s, 2s, 2.1s;
+  }
+
+  /* Line drawings rise from their ground line; the veil unrolls downwards.
+     (A hairline stays unclipped so lazy-loading still sees the image.) */
+  .rl2 [data-reveal="draw"] { clip-path: inset(99.5% 0 0 0); }
+  .rl2 [data-reveal="unveil"] {
+    clip-path: inset(0 0 99.5% 0);
+    transition-duration: 1.2s, 1.4s, 1.5s, 2.8s, 2s;
+  }
+
+  .rl2 [data-reveal="line"] { opacity: 1; }
+  .rl2 [data-reveal="line"] path {
+    stroke-dashoffset: 1;
+    transition: stroke-dashoffset 3.2s var(--rl2-ease-ink) 0.2s;
+  }
+
+  .rl2 [data-reveal][data-shown],
+  .rl2 [data-shown] [data-reveal] {
+    opacity: 1;
+    translate: none;
+    scale: none;
+  }
+
+  /* Only the wipes touch clip-path/mask: a clip on other wrappers would crop
+     artwork that deliberately spills past the column (e.g. the hero mirrors). */
+  .rl2 :is([data-reveal="draw"], [data-reveal="unveil"]):is([data-shown], [data-shown] *) {
+    clip-path: inset(0);
+  }
+
+  .rl2 [data-reveal="write"]:is([data-shown], [data-shown] *) {
+    mask-position: 0 0;
+  }
+
+  .rl2 [data-reveal="line"][data-shown] path {
+    stroke-dashoffset: 0;
+  }
+
+  /* Pearls: each slice fades in at its moment in the video; the glint then
+     travels round the frame, and again every 9s. */
+  .rl2-pearls__reveal { opacity: 0; }
+
+  [data-shown] > .rl2-pearls__reveal {
+    animation: rl2-pearl-in 0.6s var(--rl2-ease) calc(var(--at) - 0.25s) both;
+  }
+
+  [data-shown] > .rl2-pearls__glint {
+    animation: rl2-pearl-glint 9s linear calc(var(--at) - 0.3s) infinite both;
+  }
+
+  @keyframes rl2-pearl-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  @keyframes rl2-pearl-glint {
+    0% { opacity: 0; }
+    3.5% { opacity: 1; }
+    7% { opacity: 0; }
+    100% { opacity: 0; }
+  }
+
+  /* Ambient motion: the chandelier sways on its chain. */
+  .rl2-sway {
+    animation: rl2-sway 7s ease-in-out infinite alternate;
+  }
+
+  @keyframes rl2-sway {
+    from { rotate: -0.9deg; }
+    to { rotate: 0.9deg; }
+  }
+}
+
+/* Scroll-linked where supported: gentle parallax, and the timeline draws with the scroll. */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .rl2-drift {
+      animation: rl2-drift linear both;
+      animation-timeline: view();
+      animation-range: cover;
+      --rl2-p: 70;
+    }
+    .rl2-drift--slow { --rl2-p: 40; }
+    .rl2-drift--float { --rl2-p: 55; }
+
+    @keyframes rl2-drift {
+      from { translate: 0 calc(var(--rl2-p) * var(--rl2-u)); }
+      to { translate: 0 calc(var(--rl2-p) * -1 * var(--rl2-u)); }
+    }
+  }
+
+  @media (scripting: enabled) and (prefers-reduced-motion: no-preference) {
+    .rl2 [data-reveal="line"] path,
+    .rl2 [data-reveal="line"][data-shown] path {
+      transition: none;
+      animation: rl2-draw linear both;
+      animation-timeline: view();
+      animation-range: cover 14% cover 66%;
+    }
+
+    @keyframes rl2-draw {
+      from { stroke-dashoffset: 1; }
+      to { stroke-dashoffset: 0; }
+    }
+  }
+}

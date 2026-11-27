@@ -32,6 +32,7 @@ yarn-error.log*
 
 # env files (can opt-in for committing if needed)
 .env*
+!.env.example
 
 # vercel
 .vercel
@@ -45,3 +46,12 @@ next-env.d.ts
 /playwright-report/
 /blob-report/
 /playwright/.cache/
+
+# design source packages (PSDs and raw layer exports): too large for git and
+# never served. Optimised derivatives live in public/designs/{id}/v{n}/.
+/design-sources/
+
+# local AI-tool skill caches (fetched per-machine, not project source)
+/.agents/
+/.aider-desk/
+/skills-lock.json

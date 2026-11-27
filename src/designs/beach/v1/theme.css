@@ -1,0 +1,33 @@
+/* Destination Beach v1 (provisional mock). Plain CSS with a theme+version prefix: the project's Turbopack Tailwind rule treats *.module.css as global CSS, so CSS Modules can't be used here: sky/sea hero and wave intro. */
+
+.bc1-sky {
+  background: linear-gradient(180deg, color-mix(in srgb, var(--inv-secondary) 55%, white) 0%, var(--inv-background) 70%);
+}
+
+.bc1-wave-reveal {
+  animation: bc1-wave-up 1.1s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+
+.bc1-fade-up {
+  animation: bc1-fade-up 900ms ease-out 300ms both;
+}
+
+@keyframes bc1-wave-up {
+  from {
+    transform: translateY(40%);
+  }
+  to {
+    transform: none;
+  }
+}
+
+@keyframes bc1-fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}

@@ -7,6 +7,7 @@ import { ChatBubble, Check, ChevronLeft, ChevronRight, Close, Replay } from "../
 import { InviteMockup } from "../invite-mockup/InviteMockup";
 import { useLaunchOfferActive } from "../pricing/useLaunchOffer";
 import { useDialogBehaviour } from "../useDialogBehaviour";
+import { LiveInvitation } from "./LiveInvitation";
 
 const order = designs.map((d) => d.id);
 
@@ -36,11 +37,17 @@ export function PreviewDialog({
   // Entry price (Classic, GBP): the launch price while the offer runs, the regular price after.
   const fromPrice = offerActive ? prices.GBP.classic : regularPrices.GBP.classic;
   const [replayKey, setReplayKey] = useState(0);
+  const [colourIndex, setColourIndex] = useState(0);
   const ref = useDialogBehaviour<HTMLDivElement>(true, onClose);
 
   const design = designById[id];
   const index = order.indexOf(id);
-  const go = (n: number) => setId(order[(n + order.length) % order.length]);
+  const go = (n: number) => {
+    setId(order[(n + order.length) % order.length]);
+    setColourIndex(0);
+  };
+  // Shipped designs preview the real invitation, in the chosen colourway.
+  const colourway = design.live?.colourways[colourIndex];
 
   return (
     <div
@@ -77,22 +84,52 @@ export function PreviewDialog({
               Live invitation
             </p>
             <div className="relative w-[min(270px,72%)]">
-              <InviteMockup key={`${id}-${replayKey}`} design={id} />
+              {colourway ? (
+                <LiveInvitation
+                  key={`${colourway.slug}-${replayKey}`}
+                  slug={colourway.slug}
+                  title={`${design.title} invitation in ${colourway.name}, live`}
+                />
+              ) : (
+                <InviteMockup key={`${id}-${replayKey}`} design={id} />
+              )}
             </div>
+            {design.live && design.live.colourways.length > 1 && (
+              <div role="group" aria-label="Colourway" className="relative flex flex-wrap justify-center gap-2">
+                {design.live.colourways.map((c, i) => (
+                  <button
+                    key={c.slug}
+                    type="button"
+                    aria-pressed={i === colourIndex}
+                    onClick={() => setColourIndex(i)}
+                    className={`inline-flex min-h-11 cursor-pointer items-center gap-2 rounded-full border px-4 text-[15px] ${
+                      i === colourIndex ? "border-cream bg-cream text-ink" : "border-[rgba(247,245,239,.55)] bg-transparent text-cream"
+                    }`}
+                  >
+                    <span aria-hidden="true" className="h-3.5 w-3.5 rounded-full shadow-[0_0_0_1.5px_rgba(247,245,239,.8)]" style={{ background: c.swatch }} />
+                    {c.name}
+                  </button>
+                ))}
+              </div>
+            )}
             <div className="relative flex flex-wrap justify-center gap-2.5">
-              <button
-                type="button"
-                onClick={() => setReplayKey((k) => k + 1)}
-                className="inline-flex min-h-11 cursor-pointer items-center gap-2 rounded-full border-0 bg-cream px-4.5 text-[15px] text-ink"
-              >
-                <Replay size={16} />
-                Replay the opening
-              </button>
+              {(!colourway || colourway.intro) && (
+                <button
+                  type="button"
+                  onClick={() => setReplayKey((k) => k + 1)}
+                  className="inline-flex min-h-11 cursor-pointer items-center gap-2 rounded-full border-0 bg-cream px-4.5 text-[15px] text-ink"
+                >
+                  <Replay size={16} />
+                  Replay the opening
+                </button>
+              )}
               <a
-                href="#demo"
+                href={colourway ? `/sites/${colourway.slug}` : "#demo"}
+                {...(colourway && { target: "_blank", rel: "noopener" })}
                 className="inline-flex min-h-11 items-center gap-2 rounded-full border border-[rgba(247,245,239,.55)] px-4.5 text-[15px] text-cream no-underline"
               >
                 View the full invitation
+                {colourway && <span className="sr-only"> (opens in a new tab)</span>}
               </a>
             </div>
           </div>

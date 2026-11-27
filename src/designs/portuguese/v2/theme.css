@@ -1,0 +1,29 @@
+/* Portuguese v2 (provisional mock). Plain CSS with a theme+version prefix: the project's Turbopack Tailwind rule treats *.module.css as global CSS, so CSS Modules can't be used here. Self-contained: no imports from v1, so
+   retiring v1 can never break v2. */
+
+.pt2-tiles {
+  background:
+    radial-gradient(circle at 50% 50%, var(--inv-accent) 0 6px, transparent 7px) 0 0 / 48px 48px,
+    radial-gradient(circle at 50% 22%, var(--inv-primary) 0 9px, transparent 10px) 0 0 / 48px 48px,
+    radial-gradient(circle at 78% 50%, var(--inv-primary) 0 9px, transparent 10px) 0 0 / 48px 48px,
+    radial-gradient(circle at 50% 78%, var(--inv-primary) 0 9px, transparent 10px) 0 0 / 48px 48px,
+    radial-gradient(circle at 22% 50%, var(--inv-primary) 0 9px, transparent 10px) 0 0 / 48px 48px,
+    #ffffff;
+}
+
+.pt2-reveal {
+  animation: pt2-reveal 1s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+
+@keyframes pt2-reveal {
+  from {
+    opacity: 0;
+    transform: scale(0.98);
+    filter: blur(4px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
+}
