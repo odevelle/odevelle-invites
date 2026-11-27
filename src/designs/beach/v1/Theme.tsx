@@ -6,6 +6,8 @@ import { mockFontFamilies } from "../../shared/mock-fonts";
 import { RichText } from "../../shared/RichText";
 import { beachV1 } from "./definition";
 import "./theme.css";
+import { RsvpForm } from "../../shared/rsvp/RsvpForm";
+import { rsvpClasses } from "./rsvp";
 
 /*
  * Destination Beach v1: PROVISIONAL MOCK, replaced by the final design.
@@ -119,7 +121,11 @@ export default function BeachTheme({ invitation, options, appearance, features }
           <section data-section="rsvp" className="rounded-2xl bg-(--inv-primary) p-8 text-center text-white">
             <h2 className="font-(family-name:--inv-heading-font) text-3xl italic">RSVP</h2>
             {content.rsvpNote && <p className="mt-2">{content.rsvpNote}</p>}
-            <p className="mt-2 text-sm opacity-80">Replies open soon.</p>
+            {invitation.rsvp && (
+              <div className="mt-6">
+                <RsvpForm slug={invitation.slug} hostsLine={invitation.hostsLine} rsvp={invitation.rsvp} classes={rsvpClasses} />
+              </div>
+            )}
           </section>
         )}
       </div>

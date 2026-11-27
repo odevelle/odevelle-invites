@@ -27,6 +27,7 @@ export const RESERVED_SLUGS = [
   "mail",
   "email",
   "smtp",
+  "send",
   "imap",
   "pop",
   "mx",

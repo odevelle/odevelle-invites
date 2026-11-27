@@ -6,6 +6,8 @@ import { mockFontFamilies } from "../../shared/mock-fonts";
 import { RichText } from "../../shared/RichText";
 import { portugueseV2 } from "./definition";
 import "./theme.css";
+import { RsvpForm } from "../../shared/rsvp/RsvpForm";
+import { rsvpClasses } from "./rsvp";
 
 /*
  * Portuguese v2: PROVISIONAL MOCK. Demonstrates a new version with a
@@ -106,7 +108,11 @@ export default function PortugueseV2Theme({ invitation, options, appearance, fea
           <section data-section="rsvp" className="mt-12 text-center">
             <h2 className={`${heading} text-3xl`}>RSVP</h2>
             {content.rsvpNote && <p className="mt-2">{content.rsvpNote}</p>}
-            <p className="mt-2 text-sm opacity-70">Replies open soon.</p>
+            {invitation.rsvp && (
+              <div className="mt-6">
+                <RsvpForm slug={invitation.slug} hostsLine={invitation.hostsLine} rsvp={invitation.rsvp} classes={rsvpClasses} />
+              </div>
+            )}
           </section>
         )}
       </div>

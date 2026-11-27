@@ -1,20 +1,33 @@
+import type { CSSProperties } from "react";
+import type { RsvpView } from "@/invitation/view";
+import { RsvpForm } from "../../../shared/rsvp/RsvpForm";
+import type { RsvpFormClasses } from "../../../shared/rsvp/parts";
 import type { Artwork } from "../assets";
 import { capsFont } from "../fonts";
 import { Amp, Art, centred, delay, u } from "../psd";
 
 /*
  * RSVP (artboard 04, y 2010–3135) and the veiled finale (y 3135–4035).
- * The PSD leaves the space under "RSVP" for the reply form (Phase 6); until
- * then it carries the reply note.
+ * The bouquet and heading keep their PSD positions; the PSD leaves the space
+ * under "RSVP" for the reply form, which flows there and lets the section grow.
  */
 
 const RSVP_TOP = 2010;
+/** Where the PSD's body text starts under the heading. */
+const BODY_TOP = 2700;
 const FINALE_TOP = 3135;
 
-export function Rsvp({ note, closing, art }: { note?: string; closing?: string; art: Artwork }) {
+type RsvpFormData = { slug: string; hostsLine: string; rsvp: RsvpView };
+
+export function Rsvp({ note, closing, art, form }: { note?: string; closing?: string; art: Artwork; form?: RsvpFormData }) {
   return (
-    <section data-section="rsvp" className="rl2-section rl2-rsvp" aria-labelledby="rl2-rsvp-title">
-      <div className="rl2-col" style={{ height: u(FINALE_TOP - RSVP_TOP) }}>
+    <section
+      data-section="rsvp"
+      className="rl2-section rl2-rsvp"
+      aria-labelledby="rl2-rsvp-title"
+      style={{ "--rl2-caps": capsFont.style.fontFamily } as CSSProperties}
+    >
+      <div className="rl2-col" style={{ height: u(BODY_TOP - RSVP_TOP) }}>
         <div className="rl2-fill" data-reveal-group>
           <Art asset={art.a4.rsvpBouquet} y={art.a4.rsvpBouquet.y - RSVP_TOP} data-reveal="descend" />
           <h2
@@ -25,26 +38,80 @@ export function Rsvp({ note, closing, art }: { note?: string; closing?: string; 
           >
             RSVP
           </h2>
-          <div className="rl2-rsvp__body" style={centred(360, 2700 - RSVP_TOP, 600)}>
-            {note && (
-              <p className="rl2-serif rl2-cream rl2-rsvp__note" data-reveal="rise" style={delay(750)}>
-                {note}
+        </div>
+      </div>
+      {/* Without a form this is exactly the PSD's remaining height, so the finale stays where it was. */}
+      <div className="rl2-col" style={{ minHeight: u(FINALE_TOP - BODY_TOP) }}>
+        <div className="rl2-rsvp__body" data-reveal-group>
+          {form ? (
+            <div className="rl2-rsvp-card" data-reveal="rise" style={delay(150)}>
+              <header className="rl2-rsvp-card__head">
+                <div className="rl2-rsvp-card__crest" aria-hidden="true">
+                  <span className="rl2-rsvp-card__rule" />
+                  <span className="rl2-rsvp-card__initials">{initials(form.hostsLine)}</span>
+                  <span className="rl2-rsvp-card__rule" />
+                </div>
+                <p className="rl2-rsvp-card__title">Kindly RSVP</p>
+                <span className="rl2-rsvp-card__divider" aria-hidden="true" />
+                <p className="rl2-rsvp-card__lede">Please let us know if you’ll be joining us</p>
+                {note && <p className="rl2-rsvp-card__note">{note}</p>}
+              </header>
+              <RsvpForm slug={form.slug} hostsLine={form.hostsLine} rsvp={form.rsvp} classes={formClasses} />
+              <p className="rl2-rsvp-card__foot">Thank you for responding</p>
+            </div>
+          ) : (
+            <>
+              {note && (
+                <p className="rl2-serif rl2-cream rl2-rsvp__note" data-reveal="rise" style={delay(150)}>
+                  {note}
+                </p>
+              )}
+              <p className="rl2-serif rl2-cream rl2-caps rl2-rsvp__status" data-reveal="rise" style={delay(300)}>
+                Replies open soon
               </p>
-            )}
-            <p className="rl2-serif rl2-cream rl2-caps rl2-rsvp__status" data-reveal="rise" style={delay(900)}>
-              Replies open soon
+            </>
+          )}
+          {closing && (
+            <p className="rl2-serif rl2-cream rl2-rsvp__closing" data-reveal="rise" style={delay(450)}>
+              {closing}
             </p>
-            {closing && (
-              <p className="rl2-serif rl2-cream rl2-rsvp__closing" data-reveal="rise" style={delay(1050)}>
-                {closing}
-              </p>
-            )}
-          </div>
+          )}
         </div>
       </div>
     </section>
   );
 }
+
+/** "Rafael & Isabel" → "R & I": the card's monogram. */
+const initials = (hostsLine: string) =>
+  hostsLine
+    .split(/\s*(?:&|,| and )\s*/)
+    .filter(Boolean)
+    .map((name) => [...name.trim()][0]?.toUpperCase() ?? "")
+    .join(" & ");
+
+/** The shared form, in this theme's own classes (theme.css, "rsvp form"). */
+const formClasses: Partial<RsvpFormClasses> = {
+  form: "rl2-form",
+  field: "rl2-form__field",
+  label: "rl2-form__label",
+  hint: "rl2-form__hint",
+  input: "rl2-form__input",
+  textarea: "rl2-form__input rl2-form__textarea",
+  select: "rl2-form__input rl2-form__select",
+  group: "rl2-form__group",
+  legend: "rl2-form__label rl2-form__legend",
+  choices: "rl2-form__choices",
+  choice: "rl2-form__choice",
+  choiceInput: "rl2-form__choice-input",
+  error: "rl2-form__error",
+  alert: "rl2-form__alert",
+  privacy: "rl2-form__privacy",
+  submit: "rl2-form__submit",
+  status: "rl2-form__status",
+  statusTitle: "rl2-form__status-title",
+  again: "rl2-form__again",
+};
 
 export function Finale({ hosts, date, art }: { hosts: string[]; date?: string; art: Artwork }) {
   const line = hosts.length === 2 ? `${hosts[0]} & ${hosts[1]}` : hosts.join(", ");

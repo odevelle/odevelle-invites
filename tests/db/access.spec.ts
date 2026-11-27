@@ -11,7 +11,7 @@ test.describe.configure({ mode: "default" });
 
 const TABLES = [
   "profiles", "clients", "reserved_slugs", "invitations", "invitation_versions",
-  "invitation_events", "invitation_media", "rsvps", "rsvp_event_responses",
+  "invitation_events", "invitation_media", "rsvps", "rsvp_event_responses", "rsvp_settings",
 ] as const;
 
 for (const autoGrants of [false, true]) test.describe(`automatic API grants ${autoGrants ? "on" : "off"}`, () => {
@@ -119,8 +119,17 @@ for (const autoGrants of [false, true]) test.describe(`automatic API grants ${au
 
     test("cannot fetch another tenant's rows even by id", async () => {
       const rows = await as(db, "authenticated", alice, async () =>
-        (await db.query("select * from public.rsvps where id = $1", [ids.bobRsvp])).rows);
+        (await db.query("select id, guest_name from public.rsvps where id = $1", [ids.bobRsvp])).rows);
       expect(rows).toEqual([]);
+    });
+
+    test("read their guests' replies, but never the connection or edit-token hashes", async () => {
+      const mine = await as(db, "authenticated", alice, async () =>
+        (await db.query("select guest_name, attending, party_size, meal_preference, message, submitted_at from public.rsvps")).rows);
+      expect(mine).toHaveLength(1);
+      for (const column of ["ip_hash", "edit_token_hash", "email", "phone", "dietary", "client_submission_id", "*"]) {
+        expect(await as(db, "authenticated", alice, () => errorOf(db.query(`select ${column} from public.rsvps`))), column).toMatch(/permission denied/);
+      }
     });
 
     test("see only their own profile and cannot promote themselves", async () => {

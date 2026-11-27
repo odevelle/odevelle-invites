@@ -1,14 +1,20 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { DEV_ROOT_DOMAINS, getRootDomain } from "@/lib/tenant/config";
 import { routeRequest } from "@/lib/tenant/routing";
+import { ACCOUNT_PATH } from "@/lib/supabase/config";
+import { withRefreshedSession } from "@/lib/supabase/proxy";
 
 /*
  * Multi-tenant routing: {slug}.odevelle.com → /sites/{slug}. The rules live in
  * src/lib/tenant/routing.ts (pure, unit-tested). No I/O here: whether the
  * invitation exists is decided by the page, against the cached database read.
+ *
+ * The one exception: the couple's account pages (/login, /auth, /dashboard on
+ * the root domain) refresh their sign-in cookie here (lib/supabase/proxy.ts).
+ * On an invitation subdomain those paths are 404s like any other.
  */
 
-export function proxy(request: NextRequest) {
+export function proxy(request: NextRequest): NextResponse | Promise<NextResponse> {
   const decision = routeRequest(
     {
       host: request.headers.get("host"),
@@ -21,7 +27,7 @@ export function proxy(request: NextRequest) {
 
   switch (decision.action) {
     case "continue":
-      return NextResponse.next();
+      return ACCOUNT_PATH.test(request.nextUrl.pathname) ? withRefreshedSession(request) : NextResponse.next();
     case "redirect":
       return NextResponse.redirect(decision.location, 308);
     case "not-found":

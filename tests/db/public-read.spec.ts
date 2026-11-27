@@ -67,7 +67,7 @@ test("never exposes private columns", async () => {
   const record = await read("amelia-oliver");
   expect(Object.keys(record ?? {}).sort()).toEqual([
     "appearance", "content", "designId", "designOptions", "designVersion", "events", "features", "id",
-    "locale", "media", "occasion", "package", "primaryDate", "publishedAt", "slug", "timeZone", "title",
+    "locale", "media", "occasion", "package", "primaryDate", "publishedAt", "rsvpSettings", "slug", "timeZone", "title",
   ]);
 });
 

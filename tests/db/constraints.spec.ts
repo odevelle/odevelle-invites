@@ -108,10 +108,13 @@ test.describe("media", () => {
 });
 
 test.describe("RSVPs", () => {
-  test("a declined RSVP can't bring guests", async () => {
-    expect(await errorOf(db.query(
-      "insert into public.rsvps (invitation_id, guest_name, attending, party_size) values ($1, 'No', false, 2)", [invA])))
-      .toMatch(/rsvps_declined_has_no_party/);
+  test("a declined RSVP can't bring guests; an accepted one brings 1–50", async () => {
+    const insert = (attending: boolean, party: number) =>
+      errorOf(db.query("insert into public.rsvps (invitation_id, guest_name, attending, party_size) values ($1, 'G', $2, $3)", [invA, attending, party]));
+    expect(await insert(false, 2)).toMatch(/rsvps_guest_count/);
+    expect(await insert(true, 0)).toMatch(/rsvps_guest_count/);
+    expect(await insert(true, 51)).toMatch(/rsvps_guest_count/);
+    expect(await insert(true, 50)).toBeNull();
   });
 
   test("per-event answers can't mix invitations", async () => {

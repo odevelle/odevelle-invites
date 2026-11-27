@@ -45,7 +45,8 @@ scripts/db/                 upload demo media to Supabase Storage (dev/preview p
 design-sources/             designers' PSDs and layer exports (git-ignored, never served)
 supabase/migrations/        version-controlled SQL (tested locally, not yet applied; see docs/supabase.md)
 supabase/seed.sql           demo invitations, generated from the fixtures (never load into production)
-docs/                       supabase.md, themes.md, domain-and-dns.md
+scripts/clients/            onboarding: give a couple access to their dashboard (see docs/auth.md)
+docs/                       supabase.md, auth.md, production.md, themes.md, domain-and-dns.md
 tests/unit/                 unit tests for the platform layer
 tests/db/                   database tests: PGlite harness, Supabase stand-ins, RLS/constraint/storage suites
 ```
@@ -66,6 +67,8 @@ Each invitation is served at `{slug}.odevelle.com` from this same app. Key rules
 - **Packages and designs are separate.** Package rules live only in `src/invitation/entitlements/packages.ts`. Pages receive resolved features and never check the package themselves.
 - **Every read is validated.** `parsePublishedInvitation()` validates the database record against the pinned design's schemas before anything renders.
 - **Guests never touch tables.** The `anon` role can only call `get_published_invitation(slug)`. RSVPs and client data are private (RLS).
+- **RSVPs.** Every theme renders the shared `RsvpForm` (name, accept/decline, guests, optional meal, message), styled by its own `rsvp.ts`; a Server Action validates replies against rules re-derived from the invitation, and `submit_rsvp()` (secret key only) stores them with limits, de-duplication and rate limits. Details: [docs/supabase.md](docs/supabase.md#how-guests-reply-rsvps).
+- **Couple Dashboard.** `/dashboard`: passwordless sign-in (Supabase email OTP; accounts made only by the studio), reply figures, a searchable, filterable guest list and CSV export, all read through RLS. Setup, email costs and onboarding: [docs/auth.md](docs/auth.md).
 - **Data source.** With `SUPABASE_URL` set, invitations come from Supabase (publishable key, RPC only) and media from the `invitation-media` Storage bucket; otherwise development uses the fixtures. Setup, migrations and the access model: [docs/supabase.md](docs/supabase.md).
 - **Invitations are unlisted** (`noindex, nofollow`). That isn't access control. `access_mode = 'passcode'` is reserved for protected invitations later.
 - **Each invitation has its own address.** `src/proxy.ts` serves `{slug}.odevelle.com` from `/sites/{slug}`, 404s reserved or malformed subdomains, and redirects `odevelle.com/sites/{slug}` to the subdomain. Rules and the full table: [docs/domain-and-dns.md](docs/domain-and-dns.md#3a-how-requests-are-routed).

@@ -503,6 +503,8 @@ const chloeShaneRecord = {
     scale: "standard",
   },
   designOptions: { colourway: "sage-green", intro: "envelope-video", timelineTimes: false },
+  // A meal question.
+  rsvpSettings: { mealOptions: ["Vegetarian", "Non-vegetarian"] },
   events: [
     { ...rafaelIsabelRecord.events[0], id: "540ca525-f5d8-44bb-8a2f-48fac27246b5", startsAt: "2027-09-18T15:45:00+05:30" },
     { ...rafaelIsabelRecord.events[1], id: "e36cdbfb-fea0-429f-9e94-e756af18b854", startsAt: "2027-09-18T16:00:00+05:30", endsAt: "2027-09-18T17:15:00+05:30", venueName: "St Francis Xavier Church", address: "Old Goa", dressCode: "Black tie" },
@@ -542,6 +544,8 @@ const leelaArjunRecord = {
   },
   designOptions: { intro: "envelope-video", timelineTimes: false },
   features: {},
+  // A meal question with three options.
+  rsvpSettings: { mealOptions: ["Vegetarian", "Non-vegetarian", "Vegan"] },
   publishedAt: "2026-11-26T12:30:00+00:00",
   events: [
     { id: "c0ddf64f-0b73-4589-94c8-6df045ffb5ac", kind: "party", title: "Engagement dinner", startsAt: "2027-05-22T19:00:00+01:00", endsAt: "2027-05-22T23:00:00+01:00", venueName: "The Orangery at Kew", address: "Richmond, London", latitude: null, longitude: null, mapUrl: null, dressCode: null, notes: null, rsvpEnabled: true, sortOrder: 0 },
